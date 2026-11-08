@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { comparison, freePlan, premiumPlan } from "@/data/premium"
-import { PremiumSimulatorBanner } from "../components/premium/PremiumSimulatorBanner"
 import { MercadoPagoCheckoutButton } from "../components/premium/MercadoPagoCheckoutButton"
 
 export default function Premium() {
@@ -19,10 +18,6 @@ export default function Premium() {
           <span className="size-1.5 rounded-full bg-emerald-400" />
           <span>PLANES · BECABOT MÉXICO</span>
         </span>
-      </div>
-
-      <div className="mt-6">
-        <PremiumSimulatorBanner />
       </div>
 
       <header className="mt-8 rounded-2xl border-2 border-black bg-white p-6 shadow-[6px_6px_0px_#000000] sm:p-8">
