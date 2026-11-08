@@ -12,14 +12,12 @@ export async function POST(req: Request) {
     }
 
     if (action === "activate") {
-      // 1. Cancelar suscripciones activas previas
       await insforgeAdmin.database
         .from("suscripciones")
         .update({ estado: "cancelada" })
         .eq("id_usuario", userId)
         .eq("estado", "activa");
 
-      // 2. Insertar suscripcion activa
       const fechaFin = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
       const { data, error } = await insforgeAdmin.database
         .from("suscripciones")
@@ -43,7 +41,6 @@ export async function POST(req: Request) {
     }
 
     if (action === "deactivate") {
-      // Cancelar cualquier suscripcion activa
       const { error } = await insforgeAdmin.database
         .from("suscripciones")
         .update({

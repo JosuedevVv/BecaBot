@@ -11,7 +11,6 @@ export const ChatHistoryHeader = () => {
 
   return (
     <div className="flex flex-col gap-2.5">
-      {/* Cabecera y contador */}
       <div className="flex items-center justify-between border-b-2 border-black pb-2">
         <span className="text-[11px] font-black uppercase tracking-wider text-black">
           Historial de chats
@@ -21,7 +20,6 @@ export const ChatHistoryHeader = () => {
         </span>
       </div>
 
-      {/* Botón Nueva Conversación */}
       <button
         type="button"
         onClick={() => startNewConversation()}
@@ -42,7 +40,6 @@ export const ChatHistoryHeader = () => {
         )}
       </button>
 
-      {/* Buscador de conversaciones */}
       <div className="relative flex items-center">
         <input
           type="text"

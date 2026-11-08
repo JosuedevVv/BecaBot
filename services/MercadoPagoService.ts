@@ -55,7 +55,6 @@ export const mercadoPagoService = {
       }
     }
 
-    // Modo Sandbox Local de Mercado Pago cuando no hay MP_ACCESS_TOKEN en .env.local
     const sandboxPrefId = `PREF-SANDBOX-${Date.now()}`
     const query = new URLSearchParams({
       pref_id: sandboxPrefId,
@@ -82,7 +81,6 @@ export const mercadoPagoService = {
       .eq('id_usuario', userId)
       .eq('estado', 'activa')
 
-    // 2. Insertar nueva suscripción activa por 30 días
     const fechaFin = new Date(
       Date.now() + DIAS_SUSCRIPCION_PREMIUM * 24 * 60 * 60 * 1000
     ).toISOString()
@@ -109,7 +107,6 @@ export const mercadoPagoService = {
   }): Promise<ResultadoVerificacionPago> {
     const cleanPaymentId = params.paymentId.trim()
 
-    // Caso A: Pago originado en la pasarela Sandbox interactiva de Mercado Pago
     if (cleanPaymentId.startsWith('MP-SANDBOX-')) {
       const partes = cleanPaymentId.split('-')
       const codigoTitular = (partes[2] || 'APRO').toUpperCase()

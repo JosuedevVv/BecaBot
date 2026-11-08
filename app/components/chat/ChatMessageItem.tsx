@@ -30,7 +30,6 @@ export const ChatMessageItem = ({
   return (
     <article className="rise-in relative min-w-0 max-w-full overflow-hidden rounded-2xl border-2 border-black bg-white p-5 shadow-[4px_4px_0px_#000000]">
       <div className="flex min-w-0 flex-col gap-3.5">
-        {/* Cabecera del mensaje sin icono, con estado de redacción o fuente */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2.5">
           <div className="flex items-center gap-2">
             <span className="font-display text-[13.5px] font-black uppercase tracking-tight text-black">
@@ -46,7 +45,6 @@ export const ChatMessageItem = ({
           {message.source && <SourceBadge source={message.source} />}
         </div>
 
-        {/* Contenido Markdown con tipografía de alto contraste */}
         <div className="relative min-w-0 max-w-full">
           <AIResponse response={message.content} />
           {isStreaming && (
@@ -57,7 +55,6 @@ export const ChatMessageItem = ({
           )}
         </div>
 
-        {/* Fuentes oficiales citadas y botón de acción rápida para recordatorio */}
         {message.citations && message.citations.length > 0 && (
           <div className="flex flex-col gap-2 rounded-xl border-2 border-black bg-neutral-50 p-3.5 shadow-[2px_2px_0px_#000000]">
             <div className="flex items-center justify-between">
@@ -88,7 +85,6 @@ export const ChatMessageItem = ({
                     </span>
                   )}
 
-                  {/* Botón rápido para agendar recordatorio de esta beca */}
                   <button
                     type="button"
                     onClick={() =>

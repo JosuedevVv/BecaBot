@@ -6,7 +6,6 @@ export const RagArchitectureSvg = ({ className = "" }: { className?: string }) =
     className={`w-full max-w-md ${className}`}
     aria-hidden
   >
-    {/* Fondo arquitectónico punteado */}
     <defs>
       <pattern id="dot-grid" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
         <circle cx="2" cy="2" r="0.8" fill="#D4D4D4" />
@@ -15,7 +14,6 @@ export const RagArchitectureSvg = ({ className = "" }: { className?: string }) =
     <rect width="420" height="260" rx="16" fill="#FBFBFB" stroke="#EBEBEB" />
     <rect width="420" height="260" rx="16" fill="url(#dot-grid)" />
 
-    {/* Bloque 1: Convocatorias Oficiales México (PostgreSQL + pgvector) */}
     <g transform="translate(24, 30)">
       <rect width="160" height="88" rx="10" fill="#FFFFFF" stroke="#111111" strokeWidth="1.5" />
       <rect x="12" y="14" width="24" height="24" rx="6" fill="#111111" />
@@ -34,7 +32,6 @@ export const RagArchitectureSvg = ({ className = "" }: { className?: string }) =
       </text>
     </g>
 
-    {/* Bloque 2: Búsqueda Web de Respaldo */}
     <g transform="translate(24, 142)">
       <rect width="160" height="88" rx="10" fill="#FFFFFF" stroke="#DDDDDD" strokeWidth="1.25" />
       <rect x="12" y="14" width="24" height="24" rx="6" fill="#F1F1F1" stroke="#DDDDDD" />
@@ -54,11 +51,9 @@ export const RagArchitectureSvg = ({ className = "" }: { className?: string }) =
       </text>
     </g>
 
-    {/* Conectores / Flechas de Trazabilidad */}
     <path d="M184 74H236" stroke="#111111" strokeWidth="1.5" strokeDasharray="3 3" />
     <path d="M184 186H210V100H236" stroke="#717171" strokeWidth="1.25" strokeDasharray="3 3" />
 
-    {/* Bloque 3: Asesor BecaBot (Respuesta con Cita) */}
     <g transform="translate(236, 44)">
       <rect width="160" height="172" rx="12" fill="#111111" />
       <rect x="14" y="14" width="22" height="22" rx="6" fill="#FFFFFF" />
@@ -70,7 +65,6 @@ export const RagArchitectureSvg = ({ className = "" }: { className?: string }) =
         EXCLUSIVO MÉXICO
       </text>
 
-      {/* Tarjeta simulada de respuesta */}
       <rect x="12" y="46" width="136" height="72" rx="6" fill="#1E1E1E" />
       <text x="20" y="62" fill="#FFFFFF" fontSize="9.5" fontWeight="600" fontFamily="sans-serif">
         Beca Benito Juárez
@@ -88,7 +82,6 @@ export const RagArchitectureSvg = ({ className = "" }: { className?: string }) =
         ✓ Vigencia verificada
       </text>
 
-      {/* Cita de trazabilidad */}
       <rect x="12" y="128" width="136" height="30" rx="6" fill="#292929" />
       <circle cx="22" cy="143" r="3" fill="#FFFFFF" />
       <text x="30" y="146" fill="#D4D4D4" fontSize="8" fontFamily="sans-serif">

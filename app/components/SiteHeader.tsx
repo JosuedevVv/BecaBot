@@ -43,7 +43,6 @@ export const SiteHeader = () => {
     }
   }, [pathname])
 
-  // Si el usuario es Premium, filtramos la pestaña "Planes" del menú de navegación
   const nav = [
     { label: "Inicio", href: "/" },
     { label: "Asesor IA", href: "/asesor" },
@@ -99,12 +98,9 @@ export const SiteHeader = () => {
         </nav>
 
         <div className="flex items-center gap-3.5">
-          {/* Componente reactivo al estado de autenticación */}
           <HeaderUserActions />
 
-          {/* Botón contextual de acción derecha */}
           {isChatPage ? (
-            // Si está en el chat y NO es premium, muestra el acceso a Planes Premium
             !isPremium && (
               <Link
                 href="/premium"
@@ -115,7 +111,6 @@ export const SiteHeader = () => {
               </Link>
             )
           ) : (
-            // Si está en otra vista, muestra el botón para ir al Asesor IA
             <Link
               href="/asesor"
               className="inline-flex h-10 items-center gap-2 rounded-full border-2 border-black bg-black px-5 text-[13.5px] font-extrabold text-white shadow-[3px_3px_0px_#555555] transition-all hover:bg-neutral-800 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"

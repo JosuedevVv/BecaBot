@@ -1,7 +1,3 @@
--- =============================================================================
--- Mejoras de precisión RAG: metadatos en match_contexto y umbrales min_score
--- =============================================================================
-
 DROP FUNCTION IF EXISTS public.match_contexto(vector, int, text);
 DROP FUNCTION IF EXISTS public.match_contexto(vector, int, text, double precision);
 
@@ -85,7 +81,6 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.match_contexto(vector, int, text, double precision) TO anon, authenticated;
 
--- Actualizar match_conocimiento_web con min_score
 DROP FUNCTION IF EXISTS public.match_conocimiento_web(vector, int);
 DROP FUNCTION IF EXISTS public.match_conocimiento_web(vector, int, double precision);
 

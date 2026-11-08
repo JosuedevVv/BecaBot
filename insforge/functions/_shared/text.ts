@@ -1,12 +1,7 @@
-/** ~4 caracteres por token (aproximacion suficiente para trocear descripciones). */
 export function approxTokens(texto: string): number {
   return Math.ceil((texto ?? '').length / 4);
 }
 
-/**
- * Parte un texto en chunks de ~maxTokens con solape de ~overlapTokens.
- * Si el texto no supera maxTokens devuelve un unico chunk.
- */
 export function chunkText(texto: string, maxTokens = 500, overlapTokens = 50): string[] {
   const t = (texto ?? '').trim();
   if (!t) return [];
@@ -32,7 +27,6 @@ export function chunkText(texto: string, maxTokens = 500, overlapTokens = 50): s
   return chunks;
 }
 
-/** Titulo corto de una conversacion a partir de las primeras palabras. */
 export function tituloDesdePregunta(pregunta: string, maxPalabras = 6): string {
   const palabras = (pregunta ?? '').trim().split(/\s+/).filter(Boolean).slice(0, maxPalabras);
   const titulo = palabras.join(' ');

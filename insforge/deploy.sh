@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Empaqueta y despliega las edge functions de BecaBot.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 

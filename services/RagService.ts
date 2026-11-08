@@ -23,7 +23,6 @@ export const ragService = {
   ): Promise<ResultadoRag> {
     const consulta = (preguntaContextualizada || pregunta).trim()
 
-    // 1. Recuperar contexto semántico directo de PostgreSQL
     const resRetriever = await vectorRetrieverService.recuperarContexto(
       consulta,
       gradoAcademico
@@ -37,7 +36,6 @@ export const ragService = {
       }
     }
 
-    // 2. Sintetizar respuesta con cadena de modelos gratuitos con fallback automático
     const systemPrompt = `${SYSTEM_BECA_BOT_RAG}\n\nContexto:\n${resRetriever.contextoTexto}`
     const historialFormateado = (historial || [])
       .filter((m) => m.role === 'user' || m.role === 'assistant')

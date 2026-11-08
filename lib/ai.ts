@@ -2,7 +2,6 @@ import dns from 'node:dns'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import { generateText } from 'ai'
 
-// Forzar resolución IPv4 primero en Node.js (evita UND_ERR_CONNECT_TIMEOUT hacia Cloudflare/OpenRouter en redes sin IPv6 global)
 dns.setDefaultResultOrder('ipv4first')
 
 const apiKey = process.env.OPENROUTER_API_KEY
@@ -11,11 +10,6 @@ export const openrouter = createOpenRouter({
   apiKey,
 })
 
-/**
- * Cadena priorizada de modelos 100% gratuitos en OpenRouter (:free).
- * Si el primer modelo alcanza su límite de peticiones por minuto (429) o no está
- * disponible temporalmente, el sistema rota automáticamente al siguiente sin fallar.
- */
 export const MODELOS_GRATUITOS_OPENROUTER = [
   'meta-llama/llama-3.3-70b-instruct:free',
   'google/gemma-3-27b-it:free',
@@ -30,16 +24,11 @@ export type OpcionesGeneracionFallback = {
   temperature?: number
 }
 
-/**
- * Ejecuta `generateText` probando en orden la cadena de modelos gratuitos (:free)
- * de OpenRouter (o Groq si GROQ_API_KEY está configurada en .env.local).
- */
 export async function generarTextoConFallback({
   system,
   messages,
   temperature = 0.2,
 }: OpcionesGeneracionFallback): Promise<{ text: string; modelUsed: string }> {
-  // Opción A: Si el usuario configura GROQ_API_KEY en .env.local (capa gratuita de 14,400 req/día)
   const groqKey = process.env.GROQ_API_KEY
   if (groqKey) {
     try {
@@ -68,7 +57,6 @@ export async function generarTextoConFallback({
     }
   }
 
-  // Opción B: Rotación automática sobre modelos :free de OpenRouter
   let ultimoError: unknown = null
 
   for (const modelId of MODELOS_GRATUITOS_OPENROUTER) {
@@ -78,7 +66,7 @@ export async function generarTextoConFallback({
         system,
         messages,
         temperature,
-        maxRetries: 0, // Evita multiplicar 3 reintentos × 10s en el mismo modelo; salta de inmediato al siguiente
+        maxRetries: 0,
       })
 
       if (text && text.trim()) {

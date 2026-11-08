@@ -69,9 +69,7 @@ export const LandingCategoriesGrid = () => {
               onClick={() => handleSelect(cat.ejemplo)}
               className="group flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-black bg-white text-left shadow-[4px_4px_0px_#000000] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_#000000] active:scale-[0.98]"
             >
-              {/* Fotografía Real con filtro contrastado */}
               <div className="relative h-36 w-full overflow-hidden border-b-2 border-black bg-neutral-200">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={cat.imagen}
                   alt={cat.titulo}

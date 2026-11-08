@@ -15,7 +15,6 @@ export type ResultadoRecordatorioChat = {
 
 export const reminderService = {
   async procesarSolicitudEnChat(nombreBeca?: string): Promise<ResultadoRecordatorioChat> {
-    // 1. Verificar si el usuario ha iniciado sesión
     const { data } = await authService.obtenerUsuarioActual()
     if (!data?.user?.id) {
       return {
@@ -30,7 +29,6 @@ export const reminderService = {
 
     const userId = data.user.id
 
-    // 2. Verificar si cuenta con Plan Premium
     const { esPremium } = await subscriptionService.obtenerEstadoSuscripcion()
     if (!esPremium) {
       return {
@@ -44,7 +42,6 @@ export const reminderService = {
       }
     }
 
-    // 3. Usuario Premium: Validar o inferir el nombre de la beca
     const nombreObjetivo = (nombreBeca || '').trim()
     if (!nombreObjetivo) {
       return {
@@ -55,7 +52,6 @@ export const reminderService = {
       }
     }
 
-    // 4. Crear recordatorio llamando al endpoint seguro server-side
     try {
       const res = await fetch('/api/reminders', {
         method: 'POST',

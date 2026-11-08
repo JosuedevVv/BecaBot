@@ -45,7 +45,6 @@ export const ProfilePlanCard = ({
           </span>
         </div>
 
-        {/* Encabezado del Plan */}
         <div className="mt-5">
           <h3 className="font-display text-2xl font-black text-black">
             {esPremium ? 'BecaBot Premium' : 'Plan Becario (Básico)'}
@@ -57,7 +56,6 @@ export const ProfilePlanCard = ({
           </p>
         </div>
 
-        {/* Métricas de actividad en 3 casillas */}
         <div className="mt-5 grid grid-cols-3 gap-2 text-center">
           <div className="rounded-xl border-2 border-black bg-neutral-50 p-2.5 shadow-[2px_2px_0px_#000000]">
             <span className="block font-display text-2xl font-black text-black">
@@ -87,7 +85,6 @@ export const ProfilePlanCard = ({
           </div>
         </div>
 
-        {/* Vigencia si es premium */}
         {esPremium && fechaFin && (
           <div className="mt-4 flex items-center justify-between rounded-xl border border-neutral-300 bg-neutral-50 px-3 py-2 text-xs font-bold text-neutral-800">
             <span>Próxima renovación / corte:</span>

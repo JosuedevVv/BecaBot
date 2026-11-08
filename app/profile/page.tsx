@@ -82,7 +82,6 @@ export default function ProfilePage() {
 
   return (
     <main className="mx-auto max-w-5xl px-5 py-10 md:py-14">
-      {/* Cabecera Principal del Perfil */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-black pb-6">
         <div>
           <div className="inline-flex items-center gap-2 rounded-md border-2 border-black bg-black px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">
@@ -108,7 +107,6 @@ export default function ProfilePage() {
         </Link>
       </div>
 
-      {/* Fila Superior: Identidad + Plan y Métricas */}
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         <ProfileIdentityCard
           perfil={perfil}
@@ -125,7 +123,6 @@ export default function ProfilePage() {
         />
       </div>
 
-      {/* Recordatorios de Becas (Premium vs Becario) */}
       <div className="mt-8">
         <ProfileRemindersSection
           isPremium={suscripcion.es_premium}
@@ -134,7 +131,6 @@ export default function ProfilePage() {
         />
       </div>
 
-      {/* Historial de Chats y Mensajes */}
       <div className="mt-8">
         <ProfileChatsSection initialConversaciones={conversaciones} />
       </div>

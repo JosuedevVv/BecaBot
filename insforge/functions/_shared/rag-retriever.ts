@@ -37,7 +37,6 @@ export async function recuperarContexto(
 
   const embedding = await generarEmbedding(preguntaBusqueda);
 
-  // 1) Búsqueda en becas, chunks y requisitos
   try {
     const { data, error } = await admin.database.rpc('match_contexto', {
       query_embedding: embedding,
@@ -52,7 +51,6 @@ export async function recuperarContexto(
     console.error('Error en match_contexto:', err);
   }
 
-  // 2) Enriquecimiento de requisitos hermanos para las becas principales
   const becaIds = Array.from(
     new Set(resultadosBecas.map((r) => r.id_beca).filter(Boolean))
   );
@@ -86,7 +84,6 @@ export async function recuperarContexto(
     }
   }
 
-  // 3) Búsqueda en conocimiento web aprendido
   try {
     const { data: webData } = await admin.database.rpc('match_conocimiento_web', {
       query_embedding: embedding,

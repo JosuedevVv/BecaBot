@@ -27,7 +27,6 @@ export const HeaderUserActions = () => {
         if (data?.user) {
           setUser({ id: data.user.id, email: data.user.email })
           
-          // Consultar username en usuarios
           try {
             const { data: userData } = await insforge.database
               .from('usuarios')
@@ -46,14 +45,12 @@ export const HeaderUserActions = () => {
             }
           }
 
-          // Consultar es_premium
           try {
             const { data: rpcPremium } = await insforge.database.rpc('es_premium', {
               uid: data.user.id,
             })
             if (mounted) setIsPremium(!!rpcPremium)
           } catch {
-            // Ignorar error rpc
           }
         } else {
           setUser(null)
@@ -82,7 +79,6 @@ export const HeaderUserActions = () => {
     )
   }
 
-  // Usuario Autenticado: Muestra enlace a su Perfil con indicador y badge
   if (user) {
     return (
       <Link
@@ -107,12 +103,10 @@ export const HeaderUserActions = () => {
     )
   }
 
-  // Si no está autenticado y está en /login o /signup, oculta el botón duplicado de Iniciar Sesión
   if (isLoginPage) {
     return null
   }
 
-  // Usuario Invitado: Muestra Iniciar Sesión
   return (
     <Link
       href="/login"

@@ -80,7 +80,6 @@ function CheckoutSandboxContent() {
       </div>
 
       <div className="rounded-2xl border-2 border-black bg-white p-6 shadow-[6px_6px_0px_#000000] sm:p-8">
-        {/* Encabezado de Resumen de Compra */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-black pb-5">
           <div>
             <span className="rounded border-2 border-black bg-neutral-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-black">
@@ -107,7 +106,6 @@ function CheckoutSandboxContent() {
           </div>
         </div>
 
-        {/* Selector de Escenarios Oficiales de Mercado Pago */}
         <div className="mt-6">
           <p className="text-xs font-black uppercase tracking-wider text-black">
             1. Elige el código de titular de prueba de Mercado Pago:
@@ -151,7 +149,6 @@ function CheckoutSandboxContent() {
           </div>
         </div>
 
-        {/* Formulario de Tarjeta de Prueba */}
         <form onSubmit={handlePay} className="mt-6 border-t-2 border-neutral-200 pt-6">
           <p className="mb-3 text-xs font-black uppercase tracking-wider text-black">
             2. Datos de la tarjeta de prueba (Visa / Mastercard México):

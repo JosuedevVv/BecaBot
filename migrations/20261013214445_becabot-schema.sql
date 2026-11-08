@@ -1,16 +1,6 @@
--- =============================================================================
--- BecaBot — esquema base, funciones, triggers, indices vectoriales y RLS
--- Zona horaria del producto: America/Mexico_City
--- =============================================================================
-
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- =============================================================================
--- 1. TABLAS
--- =============================================================================
-
--- usuarios: perfil de la app. id_usuario == id en auth.users (InsForge Auth).
 CREATE TABLE public.usuarios (
   id_usuario UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   username   TEXT,
@@ -18,7 +8,6 @@ CREATE TABLE public.usuarios (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- becas
 CREATE TABLE public.becas (
   id_beca          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name             TEXT NOT NULL,
@@ -30,7 +19,6 @@ CREATE TABLE public.becas (
   created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- requisitos (hijos de beca)
 CREATE TABLE public.requisitos (
   id_requisito UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_beca      UUID NOT NULL REFERENCES public.becas(id_beca) ON DELETE CASCADE,
@@ -39,7 +27,6 @@ CREATE TABLE public.requisitos (
   created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- beca_chunks (solo si la descripcion supera ~500 tokens)
 CREATE TABLE public.beca_chunks (
   id_chunk   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_beca    UUID NOT NULL REFERENCES public.becas(id_beca) ON DELETE CASCADE,
@@ -48,7 +35,6 @@ CREATE TABLE public.beca_chunks (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- suscripciones (plan premium). is_first lo calcula un trigger.
 CREATE TABLE public.suscripciones (
   id_suscripcion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_usuario     UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -61,7 +47,6 @@ CREATE TABLE public.suscripciones (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- postulaciones (exclusivo premium)
 CREATE TABLE public.postulaciones (
   id_postulacion    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_usuario        UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -75,7 +60,6 @@ CREATE TABLE public.postulaciones (
   UNIQUE (id_usuario, id_beca)
 );
 
--- alertas_beca (exclusivo premium)
 CREATE TABLE public.alertas_beca (
   id_alerta  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_usuario UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -87,7 +71,6 @@ CREATE TABLE public.alertas_beca (
   UNIQUE (id_usuario, id_beca)
 );
 
--- recordatorios: solo los escribe el backend (service role)
 CREATE TABLE public.recordatorios (
   id_recordatorio UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_alerta       UUID NOT NULL REFERENCES public.alertas_beca(id_alerta) ON DELETE CASCADE,
@@ -101,7 +84,6 @@ CREATE TABLE public.recordatorios (
   UNIQUE (id_alerta, dias_antes)
 );
 
--- conversaciones
 CREATE TABLE public.conversaciones (
   id_conversacion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_usuario      UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -110,7 +92,6 @@ CREATE TABLE public.conversaciones (
   created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- mensajes
 CREATE TABLE public.mensajes (
   id_mensaje      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   id_conversacion UUID NOT NULL REFERENCES public.conversaciones(id_conversacion) ON DELETE CASCADE,
@@ -119,10 +100,6 @@ CREATE TABLE public.mensajes (
   embedding       vector(1536),
   created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-
--- =============================================================================
--- 2. INDICES (claves foraneas y vectoriales HNSW)
--- =============================================================================
 
 CREATE INDEX becas_grado_academico_idx      ON public.becas (grado_academico);
 CREATE INDEX becas_fecha_expiracion_idx     ON public.becas (fecha_expiracion);
@@ -144,11 +121,6 @@ CREATE INDEX requisitos_embedding_hnsw_idx
 CREATE INDEX beca_chunks_embedding_hnsw_idx
   ON public.beca_chunks USING hnsw (embedding vector_cosine_ops);
 
--- =============================================================================
--- 3. FUNCIONES
--- =============================================================================
-
--- hoy_mx(): fecha actual en la zona horaria del producto.
 CREATE OR REPLACE FUNCTION public.hoy_mx()
 RETURNS date
 LANGUAGE sql
@@ -157,8 +129,6 @@ AS $$
   SELECT (now() AT TIME ZONE 'America/Mexico_City')::date;
 $$;
 
--- es_premium(uid): true si el usuario tiene una suscripcion activa y vigente.
--- SECURITY DEFINER para poder consultar suscripciones (con RLS) desde politicas.
 CREATE OR REPLACE FUNCTION public.es_premium(uid uuid)
 RETURNS boolean
 LANGUAGE sql
@@ -175,7 +145,6 @@ AS $$
   );
 $$;
 
--- Helper para RLS de mensajes (evita recursion RLS sobre conversaciones).
 CREATE OR REPLACE FUNCTION public.es_dueno_conversacion(p_id_conversacion uuid, p_uid uuid)
 RETURNS boolean
 LANGUAGE sql
@@ -191,7 +160,6 @@ AS $$
   );
 $$;
 
--- match_contexto: busqueda semantica en becas, requisitos y beca_chunks.
 CREATE OR REPLACE FUNCTION public.match_contexto(
   query_embedding vector(1536),
   match_count     int DEFAULT 5,
@@ -252,11 +220,6 @@ AS $$
   LIMIT match_count;
 $$;
 
--- =============================================================================
--- 4. TRIGGERS
--- =============================================================================
-
--- is_first: calculado por el backend al insertar una suscripcion.
 CREATE OR REPLACE FUNCTION public.suscripcion_set_is_first()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -275,7 +238,6 @@ CREATE TRIGGER suscripcion_set_is_first
 BEFORE INSERT ON public.suscripciones
 FOR EACH ROW EXECUTE FUNCTION public.suscripcion_set_is_first();
 
--- is_first / id_usuario no pueden modificarse por el cliente.
 CREATE OR REPLACE FUNCTION public.suscripcion_protege_campos()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -295,7 +257,6 @@ CREATE TRIGGER suscripcion_protege_campos
 BEFORE UPDATE ON public.suscripciones
 FOR EACH ROW EXECUTE FUNCTION public.suscripcion_protege_campos();
 
--- updated_at automatico en postulaciones.
 CREATE OR REPLACE FUNCTION public.set_updated_at()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -310,7 +271,6 @@ CREATE TRIGGER postulaciones_set_updated_at
 BEFORE UPDATE ON public.postulaciones
 FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
--- Al crear una postulacion 'pendiente', crea la alerta correspondiente.
 CREATE OR REPLACE FUNCTION public.postulacion_crear_alerta()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -331,7 +291,6 @@ CREATE TRIGGER postulacion_crear_alerta
 AFTER INSERT ON public.postulaciones
 FOR EACH ROW EXECUTE FUNCTION public.postulacion_crear_alerta();
 
--- Al cambiar el estado fuera de 'pendiente', desactiva la alerta.
 CREATE OR REPLACE FUNCTION public.postulacion_actualiza_alerta()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -355,10 +314,6 @@ FOR EACH ROW
 WHEN (NEW.estado IS DISTINCT FROM OLD.estado)
 EXECUTE FUNCTION public.postulacion_actualiza_alerta();
 
--- =============================================================================
--- 5. RLS + GRANTS
--- =============================================================================
-
 ALTER TABLE public.usuarios        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.becas           ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.requisitos      ENABLE ROW LEVEL SECURITY;
@@ -372,7 +327,6 @@ ALTER TABLE public.mensajes        ENABLE ROW LEVEL SECURITY;
 
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
 
--- --- usuarios: cada usuario administra su propio perfil ---
 CREATE POLICY "usuarios_propio_select" ON public.usuarios
   FOR SELECT TO authenticated
   USING (id_usuario = (SELECT auth.uid()));
@@ -388,7 +342,6 @@ CREATE POLICY "usuarios_propio_delete" ON public.usuarios
   USING (id_usuario = (SELECT auth.uid()));
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.usuarios TO authenticated;
 
--- --- becas / requisitos / beca_chunks: lectura publica, escritura solo backend ---
 CREATE POLICY "becas_lectura_publica" ON public.becas
   FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "requisitos_lectura_publica" ON public.requisitos
@@ -401,7 +354,6 @@ REVOKE INSERT, UPDATE, DELETE ON public.becas, public.requisitos, public.beca_ch
 GRANT SELECT ON public.becas, public.requisitos, public.beca_chunks
   TO anon, authenticated;
 
--- --- conversaciones / mensajes: solo el dueno ---
 CREATE POLICY "conversaciones_propio_all" ON public.conversaciones
   FOR ALL TO authenticated
   USING (id_usuario = (SELECT auth.uid()))
@@ -414,14 +366,12 @@ CREATE POLICY "mensajes_propio_all" ON public.mensajes
   WITH CHECK (public.es_dueno_conversacion(id_conversacion, (SELECT auth.uid())));
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.mensajes TO authenticated;
 
--- --- suscripciones: el usuario solo lee las suyas; escribe solo el backend ---
 CREATE POLICY "suscripciones_propio_select" ON public.suscripciones
   FOR SELECT TO authenticated
   USING (id_usuario = (SELECT auth.uid()));
 REVOKE INSERT, UPDATE, DELETE ON public.suscripciones FROM anon, authenticated;
 GRANT SELECT ON public.suscripciones TO authenticated;
 
--- --- postulaciones / alertas_beca: solo dueno Y premium ---
 CREATE POLICY "postulaciones_premium_all" ON public.postulaciones
   FOR ALL TO authenticated
   USING (id_usuario = (SELECT auth.uid()) AND public.es_premium((SELECT auth.uid())))
@@ -434,10 +384,8 @@ CREATE POLICY "alertas_premium_all" ON public.alertas_beca
   WITH CHECK (id_usuario = (SELECT auth.uid()) AND public.es_premium((SELECT auth.uid())));
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.alertas_beca TO authenticated;
 
--- --- recordatorios: sin acceso desde el cliente (solo service role) ---
 REVOKE ALL ON public.recordatorios FROM anon, authenticated;
 
--- --- ejecucion de funciones ---
 GRANT EXECUTE ON FUNCTION public.hoy_mx() TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.es_premium(uuid) TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.match_contexto(vector, int, text) TO anon, authenticated;

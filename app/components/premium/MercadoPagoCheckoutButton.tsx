@@ -61,7 +61,6 @@ function MercadoPagoCheckoutInner() {
     }
   }, [sincronizarEstado])
 
-  // Detectar retorno de Mercado Pago (?mp_return=1&payment_id=...&status=...)
   useEffect(() => {
     const paymentId =
       searchParams.get('payment_id') || searchParams.get('collection_id')

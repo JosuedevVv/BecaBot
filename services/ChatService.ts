@@ -32,7 +32,6 @@ export const chatService = {
             return
           }
 
-          // 1) Detección de intenciones rápidas (saludos, identidad) sin coste de IA
           const intencion = clasificarIntencionRapida(pregunta)
           if (intencion.esRapida && intencion.respuesta) {
             enviar({ type: 'source', source: 'rag' })
@@ -43,7 +42,6 @@ export const chatService = {
           let respondidoPorRag = false
           enviar({ type: 'status', phase: 'rag' })
 
-          // 2) Consulta al RAG con pregunta contextualizada
           try {
             const preguntaContextualizada = construirPreguntaContextualizada(messages)
             const historialReciente = messages.slice(-6).map((m) => ({
@@ -70,7 +68,6 @@ export const chatService = {
             console.error('[ChatService][RAG Exception]:', err)
           }
 
-          // 3) Fallback a Búsqueda Web si el RAG no tenía información
           if (!respondidoPorRag) {
             try {
               enviar({ type: 'status', phase: 'web' })
@@ -95,7 +92,6 @@ export const chatService = {
           try {
             controller.close()
           } catch {
-            // El cliente cerró la conexión
           }
         }
       },

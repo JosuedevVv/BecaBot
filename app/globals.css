@@ -5,7 +5,6 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-display: 'Bricolage Grotesque', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* ── Airbnb-style Monochromatic Neutral Palette con Alto Contraste Garantizado ─ */
   --color-bg: #ffffff;
   --color-surface: #f7f7f7;
   --color-surface-2: #eeeeee;
@@ -15,13 +14,11 @@
   --color-line-soft: rgba(17, 17, 17, 0.08);
   --color-line-strong: #111111;
 
-  /* Texto siempre de máximo contraste sobre blanco y superficies claras */
   --color-text: #111111;
   --color-secondary: #2c2c2c;
   --color-tertiary: #525252;
   --color-muted: #6e6e6e;
 
-  /* Tinta negra para elementos oscuros */
   --color-ink: #111111;
   --color-primary: #111111;
   --color-accent: #111111;
@@ -85,8 +82,6 @@ body {
   background: #cccccc;
   border-radius: 999px;
 }
-
-/* ── Editorial markdown con contraste perfecto ─────────────────────────── */
 
 .markdown {
   font-size: 0.9375rem;

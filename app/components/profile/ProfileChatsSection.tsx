@@ -21,7 +21,6 @@ export const ProfileChatsSection = ({
     try {
       await profileService.eliminarConversacion(idConversacion)
     } catch {
-      // Ignorar
     }
   }
 
@@ -55,7 +54,6 @@ export const ProfileChatsSection = ({
         </Link>
       </div>
 
-      {/* Buscador de conversaciones */}
       {conversaciones.length > 0 && (
         <div className="mt-5">
           <input
@@ -68,7 +66,6 @@ export const ProfileChatsSection = ({
         </div>
       )}
 
-      {/* Lista de conversaciones */}
       <div className="mt-5 flex flex-col gap-3">
         {conversaciones.length === 0 ? (
           <div className="rounded-xl border-2 border-dashed border-neutral-300 p-8 text-center">
@@ -145,7 +142,6 @@ export const ProfileChatsSection = ({
                   </div>
                 </div>
 
-                {/* Vista previa de mensajes desplegados */}
                 {isExpanded && chat.mensajes && chat.mensajes.length > 0 && (
                   <div className="border-t-2 border-neutral-200 bg-white p-4">
                     <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">

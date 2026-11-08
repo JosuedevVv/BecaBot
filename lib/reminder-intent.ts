@@ -5,7 +5,6 @@ export type IntencionRecordatorio = {
   consultaBeca?: string
 }
 
-// Patrones de solicitud de recordatorio
 const PATRONES_RECORDATORIO = [
   'hazme un recordatorio',
   'haz un recordatorio',
@@ -47,8 +46,6 @@ export function detectarIntencionRecordatorio(
     return { esRecordatorio: false }
   }
 
-  // 1. Intentar extraer el nombre de la beca directamente del prompt
-  // Ej: "hazme un recordatorio para la beca benito juarez"
   let becaExtraida = ''
 
   const prefijos = [
@@ -62,7 +59,6 @@ export function detectarIntencionRecordatorio(
     const match = prompt.match(regex)
     if (match && match[1]) {
       const candidato = match[1].replace(/[¿?¡!.,;]/g, '').trim()
-      // Si el candidato no es genérico como "esta beca", "esa beca", "esto"
       if (!/^(esta\s+beca|esa\s+beca|la\s+beca|una\s+beca|esto|ella)$/i.test(candidato)) {
         becaExtraida = candidato
         break
@@ -70,9 +66,7 @@ export function detectarIntencionRecordatorio(
     }
   }
 
-  // 2. Si no se pudo extraer o el usuario dijo "de esta beca", buscar en el historial contextual
   if (!becaExtraida && historialReciente.length > 0) {
-    // Buscar en el último mensaje del asistente si había citas
     const ultimosAsistente = [...historialReciente]
       .reverse()
       .filter((m) => m.role === 'assistant')
@@ -83,7 +77,6 @@ export function detectarIntencionRecordatorio(
         break
       }
 
-      // Buscar nombres comunes en negrita o palabras clave en el texto
       const matchNegrita = msg.content.match(/\*\*([^*]+(?:Beca|Convocatoria)[^*]+)\*\*/i)
       if (matchNegrita && matchNegrita[1]) {
         becaExtraida = matchNegrita[1].trim()
@@ -91,7 +84,6 @@ export function detectarIntencionRecordatorio(
       }
     }
 
-    // Si aún no encontramos, buscar en los mensajes previos del usuario si mencionó una beca
     if (!becaExtraida) {
       const ultimosUsuario = [...historialReciente]
         .reverse()

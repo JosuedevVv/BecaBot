@@ -60,7 +60,6 @@ export const LandingHowItWorks = () => {
                 </span>
               </div>
 
-              {/* Ilustración de Documentos y Becas reales */}
               <div className="my-6 flex justify-center">
                 <div className="flex size-24 items-center justify-center rounded-2xl border-2 border-black bg-neutral-50 p-2 shadow-[2px_2px_0px_#000000] transition-transform group-hover:scale-105">
                   <ScholarshipPillarSvg kind={p.kind} size={72} />

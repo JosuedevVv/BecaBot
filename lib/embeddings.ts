@@ -1,6 +1,5 @@
 import dns from 'node:dns'
 
-// Forzar resolución IPv4 primero en Node.js para evitar UND_ERR_CONNECT_TIMEOUT en openrouter.ai:443
 dns.setDefaultResultOrder('ipv4first')
 
 export async function generarEmbedding(texto: string): Promise<number[]> {

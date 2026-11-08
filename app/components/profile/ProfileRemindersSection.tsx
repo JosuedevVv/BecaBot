@@ -38,7 +38,6 @@ export const ProfileRemindersSection = ({
     try {
       await profileService.alternarAlerta(idAlerta, nuevoEstado)
     } catch {
-      // Revertir en error
       setAlertas((prev) =>
         prev.map((a) => (a.id_alerta === idAlerta ? { ...a, activa: estadoActual } : a))
       )
@@ -58,7 +57,6 @@ export const ProfileRemindersSection = ({
         return
       }
 
-      // Actualizar listado
       const { alertas: nuevasAlertas } = await profileService.obtenerDatosPerfil(userId)
       setAlertas(nuevasAlertas)
       setSelectedBeca('')
@@ -70,7 +68,6 @@ export const ProfileRemindersSection = ({
     }
   }
 
-  // Si NO es Premium: Bloque con candado tipográfico explicando el beneficio
   if (!isPremium) {
     return (
       <section className="rounded-2xl border-2 border-black bg-white p-6 shadow-[6px_6px_0px_#000000] sm:p-7">
@@ -128,7 +125,6 @@ export const ProfileRemindersSection = ({
             </div>
           </div>
 
-          {/* Wireframe de ejemplo de recordatorio bloqueado */}
           <div
             aria-hidden
             className="flex flex-col gap-3 rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 p-4 opacity-70"
@@ -149,7 +145,6 @@ export const ProfileRemindersSection = ({
     )
   }
 
-  // Si ES Premium: Panel de control completo de alertas
   return (
     <section className="rounded-2xl border-2 border-black bg-white p-6 shadow-[6px_6px_0px_#000000] sm:p-7">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-black pb-4">
@@ -172,7 +167,6 @@ export const ProfileRemindersSection = ({
         </span>
       </div>
 
-      {/* Formulario para programar nuevo recordatorio */}
       <form onSubmit={handleCrearAlerta} className="mt-5 flex flex-wrap items-center gap-3">
         <select
           value={selectedBeca}
@@ -204,7 +198,6 @@ export const ProfileRemindersSection = ({
         </div>
       )}
 
-      {/* Lista de alertas */}
       <div className="mt-6 flex flex-col gap-3">
         {alertas.length === 0 ? (
           <div className="rounded-xl border-2 border-dashed border-neutral-300 p-6 text-center text-xs font-bold text-neutral-600">

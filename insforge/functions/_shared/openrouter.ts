@@ -1,8 +1,3 @@
-/**
- * Embeddings via OpenRouter (Model Gateway de InsForge).
- * La clave vive en el secret OPENROUTER_API_KEY del proyecto; nunca en el codigo.
- * Las completaciones de chat usan Groq (_shared/groq.ts).
- */
 import Deno from 'deno';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
@@ -39,7 +34,6 @@ async function openrouter(path: string, payload: unknown): Promise<any> {
   return res.json();
 }
 
-/** Embedding de un solo texto (vector de 1536 para text-embedding-3-small). */
 export async function generarEmbedding(texto: string): Promise<number[]> {
   const json = await openrouter('/embeddings', {
     model: EMBEDDING_MODEL,
@@ -52,7 +46,6 @@ export async function generarEmbedding(texto: string): Promise<number[]> {
   return emb;
 }
 
-/** Embeddings en lote; mantiene el orden de entrada. */
 export async function generarEmbeddings(textos: string[]): Promise<number[][]> {
   if (textos.length === 0) return [];
   const json = await openrouter('/embeddings', {

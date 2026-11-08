@@ -39,12 +39,10 @@ export const InfoPanel = () => {
     )
   }
 
-  // Si no está autenticado, muestra el bloqueo de invitado
   if (!isAuthenticated) {
     return <ChatHistoryGuestLock />
   }
 
-  // Usuario autenticado: Renderiza panel completo interactivo
   return (
     <div
       aria-label="Panel de Historial de Chats"
@@ -53,7 +51,6 @@ export const InfoPanel = () => {
       <ChatHistoryHeader />
       <ChatHistoryList />
 
-      {/* Pie informativo de la base */}
       <div className="border-t-2 border-neutral-200 pt-2 text-center text-[10px] font-bold text-neutral-600">
         Chats guardados en tu expediente · BecaBot México
       </div>

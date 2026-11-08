@@ -28,10 +28,6 @@ export const ChatMessageList = () => {
     (lastMessage?.role === "user" ||
       (lastMessage?.role === "assistant" && lastMessage.content === ""))
 
-  // Auto-scroll controlado durante la generación:
-  // 1. Usa "instant" / auto durante el streaming de texto para evitar la oscilación y temblor
-  //    provocado por animaciones continuas de "smooth" compitiendo entre sí.
-  // 2. Solo hace auto-scroll si el usuario está cerca del final (no rompe si el usuario subió a leer).
   const isNearBottomRef = useRef(true)
 
   const handleScroll = () => {
@@ -45,14 +41,11 @@ export const ChatMessageList = () => {
     const el = scrollRef.current
     if (!el) return
 
-    // Si el usuario subió deliberadamente el scroll, no lo forzamos bruscamente
     if (!isNearBottomRef.current) return
 
-    // Si está generando texto en vivo, usamos scroll instantáneo para evitar el "bouncing/temblor"
     if (isGenerating) {
       el.scrollTop = el.scrollHeight
     } else {
-      // Al terminar la respuesta o al cargar un mensaje, desplazamiento suave
       el.scrollTo({ top: el.scrollHeight, behavior: "smooth" })
     }
   }, [messages, isGenerating])
@@ -64,7 +57,6 @@ export const ChatMessageList = () => {
       className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 pb-8 pt-2"
     >
       <div className="mx-auto flex min-w-0 w-full max-w-2xl flex-col gap-6">
-        {/* Barra Superior de Sesión */}
         <div className="sticky top-0 z-10 flex items-center justify-between rounded-xl border-2 border-black bg-white px-4 py-2.5 shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center gap-2">
             <span
@@ -77,7 +69,6 @@ export const ChatMessageList = () => {
             </span>
           </div>
 
-          {/* Control condicional: si no está autenticado, no permite reiniciar/abrir más chats */}
           {isAuthenticated ? (
             <button
               type="button"
@@ -97,7 +88,6 @@ export const ChatMessageList = () => {
           )}
         </div>
 
-        {/* Lista de mensajes */}
         {messages.map((message, idx) => {
           const isLastAssistantStreaming =
             isGenerating &&
@@ -114,7 +104,6 @@ export const ChatMessageList = () => {
           )
         })}
 
-        {/* Tarjeta cuando el Chatbot está pensando / buscando */}
         {showTyping && (
           <article
             aria-live="polite"
@@ -134,7 +123,6 @@ export const ChatMessageList = () => {
           </article>
         )}
 
-        {/* Sugerencias de seguimiento */}
         {!isGenerating && (
           <div className="rounded-2xl border-2 border-black bg-neutral-50 p-4 shadow-[3px_3px_0px_#000000]">
             <span className="text-[11px] font-black uppercase tracking-wider text-black">

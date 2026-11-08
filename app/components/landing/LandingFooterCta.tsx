@@ -4,7 +4,6 @@ export const LandingFooterCta = () => {
   return (
     <section className="border-t-2 border-black bg-black py-20 text-white">
       <div className="mx-auto max-w-4xl px-5 text-center sm:px-6">
-        {/* Badge Tipográfico Elegante de Alto Contraste */}
         <div className="mx-auto inline-flex items-center gap-2 rounded-full border-2 border-white bg-black px-4 py-1 text-[11px] font-black uppercase tracking-wider text-white">
           <span className="size-2 rounded-full bg-white animate-pulse" />
           CONSULTA DIRECTA DE BECAS EN MÉXICO

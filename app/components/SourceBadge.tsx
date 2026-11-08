@@ -38,7 +38,6 @@ export const SearchingStatus = ({ phase }: { phase?: OrigenRespuesta | null }) =
   return (
     <div className="flex flex-col gap-3.5">
       <div className="flex items-center gap-3 rounded-xl border-2 border-black bg-neutral-50 p-3 shadow-[2px_2px_0px_#000000]">
-        {/* Loader geométrico de alto contraste */}
         <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border-2 border-black bg-black text-white">
           <span className="size-4 animate-spin rounded-xs border-2 border-white border-t-transparent" />
         </div>
@@ -64,7 +63,6 @@ export const SearchingStatus = ({ phase }: { phase?: OrigenRespuesta | null }) =
         )}
       </div>
 
-      {/* Barras skeleton estilo wireframe mientras piensa */}
       <div className="flex flex-col gap-2 px-1" aria-hidden>
         <div className="h-2.5 w-11/12 animate-pulse rounded-full bg-neutral-200" />
         <div className="h-2.5 w-4/5 animate-pulse rounded-full bg-neutral-200 [animation-delay:150ms]" />

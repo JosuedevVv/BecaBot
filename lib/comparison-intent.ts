@@ -13,10 +13,6 @@ const PATRONES_COMPARACION = [
   /\bvs\b/i,
 ]
 
-/**
- * Detecta si la consulta del usuario solicita usar el Comparador de Becas
- * (contrastar montos, requisitos, fechas o elegibilidad entre becas).
- */
 export function detectarIntencionComparador(prompt: string): IntencionComparador {
   const limpio = (prompt || '').trim()
   const norm = normalizarTexto(limpio)

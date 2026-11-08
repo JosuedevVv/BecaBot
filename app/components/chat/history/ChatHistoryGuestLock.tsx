@@ -5,7 +5,6 @@ import Link from 'next/link'
 export const ChatHistoryGuestLock = () => {
   return (
     <div className="flex h-full flex-col justify-between rounded-2xl border-2 border-black bg-white p-4 shadow-[4px_4px_0px_#000000]">
-      {/* Cabecera restringida */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between border-b-2 border-black pb-2.5">
           <span className="text-[11px] font-black uppercase tracking-wider text-black">
@@ -16,7 +15,6 @@ export const ChatHistoryGuestLock = () => {
           </span>
         </div>
 
-        {/* Botón de nuevo chat bloqueado */}
         <button
           type="button"
           disabled
@@ -33,7 +31,6 @@ export const ChatHistoryGuestLock = () => {
         </button>
       </div>
 
-      {/* Explicación central */}
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center p-2 text-center">
         <div className="flex size-11 items-center justify-center rounded-xl border-2 border-black bg-neutral-100 text-lg shadow-[2px_2px_0px_#000000]">
           🔒
@@ -62,7 +59,6 @@ export const ChatHistoryGuestLock = () => {
         </div>
       </div>
 
-      {/* Pie informativo */}
       <div className="rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 p-2 text-center text-[10px] font-bold text-neutral-600">
         Orientación oficial de becas en México
       </div>

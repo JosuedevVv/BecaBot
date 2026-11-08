@@ -16,8 +16,6 @@ export const ChatWorkspace = () => {
   const selectConversation = useChatHistoryStore((s) => s.selectConversation)
   const initializedParam = useRef(false)
 
-  // 1) Si viene ?chat=<id>, cargar la conversación guardada
-  // 2) Si viene ?q=<texto>, enviar la consulta inicial
   useEffect(() => {
     if (initializedParam.current) return
 

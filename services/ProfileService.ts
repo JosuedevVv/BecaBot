@@ -51,7 +51,6 @@ export const profileService = {
     totalMensajes: number
     alertas: AlertaRecordatorio[]
   }> {
-    // 1. Perfil de usuario (public.usuarios)
     let perfil: PerfilUsuario | null = null
     try {
       const { data, error } = await insforge.database
@@ -63,7 +62,6 @@ export const profileService = {
       if (!error && data) {
         perfil = data as PerfilUsuario
       } else if (emailFallback) {
-        // Autosanación si no existe la fila aún
         const defaultUsername = emailFallback.split('@')[0] || 'estudiante'
         const { data: nuevo, error: errInsert } = await insforge.database
           .from('usuarios')
@@ -79,7 +77,6 @@ export const profileService = {
       console.error('Error al consultar perfil:', e)
     }
 
-    // 2. Suscripción y es_premium
     let esPremium = false
     let suscripcion: SuscripcionUsuario = {
       estado: 'ninguna',
@@ -115,7 +112,6 @@ export const profileService = {
       console.error('Error al consultar suscripción:', e)
     }
 
-    // 3. Conversaciones y mensajes
     let conversaciones: ConversacionConMensajes[] = []
     let totalMensajes = 0
 
@@ -151,7 +147,6 @@ export const profileService = {
       console.error('Error al consultar conversaciones:', e)
     }
 
-    // 4. Alertas y postulaciones (exclusivo / relevante para premium)
     let alertas: AlertaRecordatorio[] = []
     try {
       const { data: alertData } = await insforge.database

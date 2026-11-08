@@ -26,7 +26,6 @@ export async function leerStreamNdjson(
           const evento = JSON.parse(limpia) as ChatEvent
           onEvent(evento)
         } catch {
-          // JSON parcial o corrupto se ignora
         }
       }
     }

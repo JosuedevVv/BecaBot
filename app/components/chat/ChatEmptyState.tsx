@@ -11,7 +11,6 @@ const promptIcons: Record<number, IconName> = {
 export const ChatEmptyState = ({ onSelectPrompt }: { onSelectPrompt: (p: string) => void }) => {
   return (
     <div className="mx-auto flex min-h-full w-full max-w-2xl flex-col justify-center px-3 py-6">
-      {/* Banner de Inicio Tipográfico Limpio Sin Icono */}
       <div className="rounded-2xl border-2 border-black bg-white p-6 shadow-[4px_4px_0px_#000000]">
         <div className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">
           <span className="size-1.5 rounded-full bg-emerald-400" />

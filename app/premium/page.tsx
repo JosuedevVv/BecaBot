@@ -21,7 +21,6 @@ export default function Premium() {
         </span>
       </div>
 
-      {/* Banner de Simulador para Pruebas Inmediatas */}
       <div className="mt-6">
         <PremiumSimulatorBanner />
       </div>
@@ -38,7 +37,6 @@ export default function Premium() {
       </header>
 
       <div className="mt-10 grid gap-8 md:grid-cols-2">
-        {/* Plan Becario */}
         <article className="flex flex-col justify-between rounded-2xl border-2 border-black bg-white p-6 shadow-[5px_5px_0px_#000000] sm:p-7">
           <div>
             <div className="flex items-center justify-between border-b-2 border-black pb-3">
@@ -90,7 +88,6 @@ export default function Premium() {
           </Link>
         </article>
 
-        {/* Plan Premium */}
         <article className="relative flex flex-col justify-between rounded-2xl border-2 border-black bg-white p-6 shadow-[8px_8px_0px_#000000] sm:p-7">
           <div>
             <div className="flex items-center justify-between border-b-2 border-black pb-3">
@@ -139,7 +136,6 @@ export default function Premium() {
         </article>
       </div>
 
-      {/* Tabla comparativa */}
       <div className="mt-12 rounded-2xl border-2 border-black bg-white p-6 shadow-[6px_6px_0px_#000000] sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-display text-xl font-black tracking-tight text-black">

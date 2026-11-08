@@ -1,9 +1,3 @@
-/**
- * Completaciones de chat via Groq (API compatible con OpenAI).
- * La clave vive en el secret GROQ_API_KEY del proyecto; nunca en el codigo.
- * Los embeddings NO se hacen aqui: Groq no ofrece embeddings, siguen en
- * OpenRouter (_shared/openrouter.ts).
- */
 import type { ChatMessage } from './openrouter.ts';
 
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
@@ -17,7 +11,6 @@ function apiKey(): string {
   return key;
 }
 
-/** Completacion de chat (respuesta del asistente). */
 export async function chat(messages: ChatMessage[]): Promise<string> {
   const res = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
     method: 'POST',

@@ -1,9 +1,3 @@
--- =============================================================================
--- Conocimiento web: RAG autoalimentado.
--- Guarda informacion util obtenida de la web (resumida por un juez LLM) para que
--- futuras consultas la recuperen junto con las becas.
--- =============================================================================
-
 CREATE TABLE public.conocimiento_web (
   id_conocimiento UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   pregunta        TEXT NOT NULL,
@@ -16,7 +10,6 @@ CREATE TABLE public.conocimiento_web (
 CREATE INDEX conocimiento_web_embedding_hnsw_idx
   ON public.conocimiento_web USING hnsw (embedding vector_cosine_ops);
 
--- Recuperacion semantica del conocimiento web aprendido.
 CREATE OR REPLACE FUNCTION public.match_conocimiento_web(
   query_embedding vector(1536),
   match_count     int DEFAULT 3
@@ -44,7 +37,6 @@ AS $$
   LIMIT match_count;
 $$;
 
--- RLS + GRANTS: lectura publica, escritura solo backend (service role).
 ALTER TABLE public.conocimiento_web ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "conocimiento_web_lectura_publica" ON public.conocimiento_web

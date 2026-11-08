@@ -58,7 +58,6 @@ export default async function (req: Request): Promise<Response> {
   const admin = adminClient();
   const userId = await getUserId(req);
 
-  // 1) Recuperación semántica modular
   let contextoTexto = '';
   let resultadosBecas: any[] = [];
   let conocimientoWeb: any[] = [];
@@ -74,7 +73,6 @@ export default async function (req: Request): Promise<Response> {
     return json({ error: `Error en recuperación RAG: ${(err as Error).message}` }, 502);
   }
 
-  // 2) Conversación (si hay usuario autenticado)
   let idConversacion: string | null = body.id_conversacion ? String(body.id_conversacion) : null;
   if (userId && !idConversacion) {
     const { data } = await admin.database
@@ -92,7 +90,6 @@ export default async function (req: Request): Promise<Response> {
     respuesta = FRASE_SIN_INFORMACION;
     sinInformacion = true;
   } else {
-    // Historial: si vino en body se usa, de lo contrario se consulta si hay idConversacion
     let historialMensajes: ChatMessage[] = Array.isArray(body.historial) ? body.historial : [];
     if (userId && idConversacion && historialMensajes.length === 0) {
       const { data } = await admin.database

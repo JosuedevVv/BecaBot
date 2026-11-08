@@ -76,7 +76,6 @@ export const ProfileIdentityCard = ({
           </span>
         </div>
 
-        {/* Username & Avatar tipográfico */}
         <div className="mt-5 flex items-start gap-4">
           <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border-2 border-black bg-black text-xl font-black text-white shadow-[3px_3px_0px_#000000]">
             {(perfil?.username || 'E').slice(0, 2).toUpperCase()}
@@ -136,7 +135,6 @@ export const ProfileIdentityCard = ({
           </div>
         </div>
 
-        {/* Fila informativa de seguridad */}
         <div className="mt-6 flex flex-col gap-2 rounded-xl border-2 border-black bg-neutral-50 p-3.5 shadow-[2px_2px_0px_#000000]">
           <div className="flex items-center justify-between text-xs font-bold text-black">
             <span>Estado del Correo</span>

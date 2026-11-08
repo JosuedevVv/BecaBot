@@ -35,10 +35,6 @@ function extraerJson(raw: string): any {
 }
 
 export const knowledgeService = {
-  /**
-   * Evalúa y persiste en public.conocimiento_web el aprendizaje obtenido en internet
-   * utilizando la conexión directa del servidor y la clave de administración.
-   */
   async guardar(
     pregunta: string,
     respuesta: string,
@@ -52,7 +48,6 @@ export const knowledgeService = {
     }
 
     try {
-      // 1. Ejecutar Juez LLM con `system` en nivel superior (AI SDK v6)
       const fuentesTexto = fuentes
         .map((f) => `- ${f.title || f.url || 'fuente'}${f.url ? ` (${f.url})` : ''}`)
         .join('\n')
@@ -74,10 +69,8 @@ export const knowledgeService = {
         ? `${juicio.tema}\n\n${juicio.resumen.trim()}`
         : juicio.resumen.trim()
 
-      // 2. Generar embedding con OpenRouter
       const embedding = await generarEmbedding(`${preguntaLimpia}\n\n${contenidoFinal}`)
 
-      // 3. Verificar si ya existe conocimiento muy similar para actualizarlo o insertarlo
       const { data: similares } = await insforgeAdmin.database.rpc('match_conocimiento_web', {
         query_embedding: embedding,
         match_count: 1,
@@ -86,7 +79,6 @@ export const knowledgeService = {
       const primerSimilar = Array.isArray(similares) && similares[0] ? similares[0] : null
 
       if (primerSimilar && Number(primerSimilar.score) >= 0.92) {
-        // Actualizar registro existente con la síntesis más reciente
         await insforgeAdmin.database
           .from('conocimiento_web')
           .update({
@@ -99,7 +91,6 @@ export const knowledgeService = {
         return true
       }
 
-      // 4. Insertar nuevo registro en conocimiento_web
       const { error: insertErr } = await insforgeAdmin.database
         .from('conocimiento_web')
         .insert([

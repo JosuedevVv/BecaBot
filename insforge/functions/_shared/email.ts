@@ -1,37 +1,11 @@
-/**
- * ============================================================================
- *  Envio de emails de recordatorio — MODULO PENDIENTE DE CONECTAR
- * ============================================================================
- *
- *  Estado actual: el envio NO esta implementado. Mientras no exista el secret
- *  `EMAIL_PROVIDER` en el proyecto, `enviarEmail()` lanza un error controlado
- *  ("proveedor no configurado") y el recordatorio se conserva en estado
- *  'pendiente' (sin incrementar intentos ni marcarse como 'fallido').
- *
- *  Para activarlo:
- *    1. Crear el secret con el proveedor elegido:
- *         npx -y @insforge/cli secrets add EMAIL_PROVIDER resend
- *       (valores soportados: "resend" | "sendgrid")
- *    2. Crear el secret con la credencial del proveedor:
- *         npx -y @insforge/cli secrets add RESEND_API_KEY re_xxx
- *       o
- *         npx -y @insforge/cli secrets add SENDGRID_API_KEY SG.xxx
- *    3. Completar el `case` correspondiente en `enviarEmail()` (marcado con TODO).
- *    4. (Opcional) Definir EMAIL_FROM / EMAIL_FROM_NAME para el remitente.
- */
 
 export type DatosRecordatorio = {
-  /** Email destino. */
   to: string;
-  /** Nombre de la beca. */
   nombreBeca: string;
-  /** Dias restantes hasta la fecha limite. */
   diasRestantes: number;
-  /** Fecha limite en formato YYYY-MM-DD. */
   fechaLimite: string;
 };
 
-/** Error controlado: no hay proveedor de email configurado todavia. */
 export class EmailNoConfiguradoError extends Error {
   readonly code = 'EMAIL_PROVIDER_NOT_CONFIGURED';
   constructor() {
@@ -47,12 +21,10 @@ export function esEmailNoConfigurado(err: unknown): boolean {
   );
 }
 
-/** Asunto del correo (texto fijo, sin LLM). */
 export function construirAsunto(d: DatosRecordatorio): string {
   return `Recordatorio: la beca "${d.nombreBeca}" vence en ${d.diasRestantes} días`;
 }
 
-/** Cuerpo en texto plano (texto fijo en español, sin LLM). */
 export function construirCuerpoTexto(d: DatosRecordatorio): string {
   return [
     'Hola,',
@@ -67,7 +39,6 @@ export function construirCuerpoTexto(d: DatosRecordatorio): string {
   ].join('\n');
 }
 
-/** Cuerpo en HTML (mismo texto fijo, sin LLM). */
 export function construirCuerpoHtml(d: DatosRecordatorio): string {
   return `<!doctype html>
 <html lang="es">
@@ -92,12 +63,6 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;');
 }
 
-/**
- * Envia un recordatorio por email.
- *
- * Lanza `EmailNoConfiguradoError` si `EMAIL_PROVIDER` no existe.
- * Lanza cualquier otro error si el proveedor falla (lo maneja el llamador).
- */
 export async function enviarEmail(d: DatosRecordatorio): Promise<void> {
   const provider = Deno.env.get('EMAIL_PROVIDER');
   if (!provider) {
@@ -112,34 +77,11 @@ export async function enviarEmail(d: DatosRecordatorio): Promise<void> {
 
   switch (provider) {
     case 'resend': {
-      // ------------------------------------------------------------------
-      // TODO(conectar Resend):
-      //   const apiKey = Deno.env.get('RESEND_API_KEY');
-      //   await fetch('https://api.resend.com/emails', {
-      //     method: 'POST',
-      //     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      //     body: JSON.stringify({ from: `${fromName} <${from}>`, to: d.to, subject: asunto, text: texto, html }),
-      //   });
-      // ------------------------------------------------------------------
       throw new Error(
         'Proveedor "resend" seleccionado pero aun no implementado en _shared/email.ts',
       );
     }
     case 'sendgrid': {
-      // ------------------------------------------------------------------
-      // TODO(conectar SendGrid):
-      //   const apiKey = Deno.env.get('SENDGRID_API_KEY');
-      //   await fetch('https://api.sendgrid.com/v3/mail/send', {
-      //     method: 'POST',
-      //     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      //     body: JSON.stringify({
-      //       personalizations: [{ to: [{ email: d.to }] }],
-      //       from: { email: from, name: fromName },
-      //       subject: asunto,
-      //       content: [ { type: 'text/plain', value: texto }, { type: 'text/html', value: html } ],
-      //     }),
-      //   });
-      // ------------------------------------------------------------------
       throw new Error(
         'Proveedor "sendgrid" seleccionado pero aun no implementado en _shared/email.ts',
       );

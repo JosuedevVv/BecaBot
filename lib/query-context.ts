@@ -31,7 +31,6 @@ export function construirPreguntaContextualizada(messages: ChatMessage[]): strin
     return preguntaActual
   }
 
-  // Buscar menciones previas relevantes en el historial inmediato
   const contextoPrevio = ultimos
     .slice(0, -1)
     .map((m) => `${m.role === 'user' ? 'Usuario' : 'Asistente'}: ${m.content}`)

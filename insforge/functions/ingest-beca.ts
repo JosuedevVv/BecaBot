@@ -15,7 +15,6 @@ export default async function (req: Request): Promise<Response> {
   const pf = preflight(req);
   if (pf) return pf;
 
-  // Solo service role / clave de admin.
   if (!isServiceRole(req)) {
     return json({ error: 'No autorizado: se requiere service role' }, 401);
   }
@@ -45,7 +44,6 @@ export default async function (req: Request): Promise<Response> {
 
   const admin = adminClient();
 
-  // 1) Beca + embedding de "name + grado + description"
   let embeddingBeca: number[];
   try {
     const textoBeca = `Beca: ${name}${grado ? ` (Grado: ${grado})` : ''}\n\n${description}`;
@@ -73,7 +71,6 @@ export default async function (req: Request): Promise<Response> {
   }
   const id_beca: string = becas[0].id_beca;
 
-  // 2) Chunks: con prefijo contextual de la beca para el embedding
   const trozos = chunkText(description);
   const idsChunks: string[] = [];
   if (trozos.length > 1) {
@@ -97,7 +94,6 @@ export default async function (req: Request): Promise<Response> {
     }
   }
 
-  // 3) Requisitos: con prefijo contextual de la beca para el embedding
   const idsRequisitos: string[] = [];
   if (requisitos.length > 0) {
     try {

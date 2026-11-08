@@ -17,7 +17,6 @@ function soloFecha(valor: unknown): string {
   return String(valor ?? '').slice(0, 10);
 }
 
-/** Lee hoy_mx() (RPC de Postgres) soportando distintas formas de respuesta. */
 async function obtenerHoyMx(admin: ReturnType<typeof adminClient>): Promise<string> {
   const { data, error } = await admin.database.rpc('hoy_mx');
   if (error) throw new Error(`hoy_mx(): ${error.message}`);
@@ -41,11 +40,6 @@ export default async function (req: Request): Promise<Response> {
 
   const admin = adminClient();
 
-  // ---------------------------------------------------------------------------
-  // PASO 1 — Generar recordatorios pendientes.
-  // Alertas activas de usuarios premium, con beca no vencida, cuyo
-  // (fecha_expiracion - hoy_mx()) coincide con algun valor de dias_antes.
-  // ---------------------------------------------------------------------------
   const { data: subs } = await admin.database
     .from('suscripciones')
     .select('id_usuario')
@@ -89,7 +83,7 @@ export default async function (req: Request): Promise<Response> {
     const beca = becasPorId.get(alerta.id_beca);
     if (!beca?.fecha_expiracion) continue;
     const expMs = Date.parse(`${soloFecha(beca.fecha_expiracion)}T00:00:00Z`);
-    if (Number.isNaN(expMs) || expMs < hoyMs) continue; // vencida o invalida
+    if (Number.isNaN(expMs) || expMs < hoyMs) continue;
     const dias = Math.round((expMs - hoyMs) / MS_POR_DIA);
     const diasAntes = Array.isArray(alerta.dias_antes) ? alerta.dias_antes : [];
     if (!diasAntes.includes(dias)) continue;
@@ -104,16 +98,12 @@ export default async function (req: Request): Promise<Response> {
       .insert(nuevas)
       .select();
     if (error) {
-      // Una violacion de unicidad significa que otra ejecucion ya los creo.
       console.log(`[enviar-recordatorios] insercion de recordatorios: ${error.message}`);
     } else {
       generados = (data ?? []).length;
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // PASO 2 — Enviar recordatorios pendientes (o fallidos con intentos < 3).
-  // ---------------------------------------------------------------------------
   const { data: pendientesRaw } = await admin.database
     .from('recordatorios')
     .select('id_recordatorio,id_alerta,dias_antes,estado,intentos')
@@ -178,7 +168,6 @@ export default async function (req: Request): Promise<Response> {
       enviados += 1;
     } catch (err) {
       if (esEmailNoConfigurado(err)) {
-        // Proveedor no configurado: queda 'pendiente', sin sumar intentos.
         console.log(
           `[enviar-recordatorios] proveedor de email no configurado; ` +
             `recordatorio ${rec.id_recordatorio} permanece pendiente`,

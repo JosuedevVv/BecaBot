@@ -19,7 +19,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 1. Verificar si el usuario es premium
     const { data: rpcPrem } = await insforgeAdmin.database.rpc("es_premium", {
       uid: userId,
     });
@@ -30,7 +29,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Buscar o crear la beca en public.becas
     let idBeca: string | null = null;
     let fechaExp: string | null = null;
     let nombreFinal = nombreObjetivo;
@@ -46,7 +44,6 @@ export async function POST(req: Request) {
       nombreFinal = becasEncontradas[0].name;
       fechaExp = becasEncontradas[0].fecha_expiracion;
     } else {
-      // Si el nombre buscado está contenido en alguna existente
       const { data: todasBecas } = await insforgeAdmin.database
         .from("becas")
         .select("id_beca, name, fecha_expiracion")
@@ -63,7 +60,6 @@ export async function POST(req: Request) {
         nombreFinal = match.name;
         fechaExp = match.fecha_expiracion;
       } else {
-        // Crear beca base para vincular
         const { data: nuevaBeca, error: errBeca } = await insforgeAdmin.database
           .from("becas")
           .insert([
@@ -92,9 +88,6 @@ export async function POST(req: Request) {
       }
     }
 
-    // 3. Verificar o registrar postulación pendiente
-    // Nota: en PostgreSQL, insertar una postulación 'pendiente' dispara el trigger
-    // `postulacion_crear_alerta` que inserta automáticamente la fila en `alertas_beca`.
     const { data: postExistente } = await insforgeAdmin.database
       .from("postulaciones")
       .select("id_postulacion")
@@ -121,7 +114,6 @@ export async function POST(req: Request) {
       ]);
     }
 
-    // 4. Verificar si la alerta ya existe (creada por el trigger o previamente)
     const { data: alertaExistente } = await insforgeAdmin.database
       .from("alertas_beca")
       .select("id_alerta")

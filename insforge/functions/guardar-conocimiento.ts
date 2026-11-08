@@ -90,7 +90,6 @@ export default async function (req: Request): Promise<Response> {
   if (!pregunta) return json({ error: 'pregunta es obligatoria' }, 400);
   if (!respuesta) return json({ guardado: false, motivo: 'respuesta vacia' });
 
-  // 1) Juez LLM con filtro estricto de México
   let juicio: Juicio;
   try {
     const raw = await chat([
@@ -121,7 +120,6 @@ export default async function (req: Request): Promise<Response> {
 
   const admin = adminClient();
 
-  // 2) Embedding de la pregunta + el conocimiento
   let embedding: number[];
   try {
     embedding = await generarEmbedding(`${pregunta}\n\n${contenido}`);
@@ -129,7 +127,6 @@ export default async function (req: Request): Promise<Response> {
     return json({ error: `Error generando embedding: ${(err as Error).message}` }, 502);
   }
 
-  // 3) Evitar duplicados por similitud
   try {
     const { data } = await admin.database.rpc('match_conocimiento_web', {
       query_embedding: embedding,
@@ -145,10 +142,8 @@ export default async function (req: Request): Promise<Response> {
       });
     }
   } catch {
-    // Si falla el chequeo de duplicados, se continúa
   }
 
-  // 4) Guardar en conocimiento_web
   const { data, error } = await admin.database
     .from('conocimiento_web')
     .insert([{ pregunta, contenido, fuentes, embedding }])

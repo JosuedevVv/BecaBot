@@ -44,7 +44,6 @@ export const subscriptionService = {
       const { data: userAuth } = await authService.obtenerUsuarioActual()
       if (!userAuth?.user?.id) return { ok: false, error: 'Inicia sesión primero' }
 
-      // Llamar al endpoint server-side con credenciales de admin (evita bloqueo RLS)
       const res = await fetch('/api/premium', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +59,6 @@ export const subscriptionService = {
         return { ok: false, error: json.error || 'Error en servidor' }
       }
 
-      // Notificar a componentes en tiempo real
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('becabot:subscription-updated'))
       }

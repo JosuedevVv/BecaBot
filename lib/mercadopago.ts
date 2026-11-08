@@ -1,7 +1,6 @@
 import dns from 'node:dns'
 import crypto from 'node:crypto'
 
-// Evita timeouts UND_ERR_CONNECT_TIMEOUT en redes locales sin ruta IPv6 global
 dns.setDefaultResultOrder('ipv4first')
 
 const MP_API_BASE = 'https://api.mercadopago.com'
@@ -44,9 +43,6 @@ export function esTokenSandboxMercadoPago(token: string): boolean {
   return token.startsWith('TEST-') || process.env.MP_SANDBOX === 'true'
 }
 
-/**
- * Crea una preferencia de Checkout Pro en la API oficial de Mercado Pago (v1).
- */
 export async function crearPreferenciaMercadoPago(
   input: CrearPreferenciaInput
 ): Promise<PreferenciaMercadoPagoResponse> {
@@ -73,8 +69,6 @@ export async function crearPreferenciaMercadoPago(
         unit_price: Number(input.unitPrice),
       },
     ],
-    // En localhost omitimos payer.email para evitar el bloqueo de Mercado Pago "No puedes pagarte a ti mismo"
-    // si el desarrollador inicia sesión en BecaBot con el mismo correo de su cuenta de Mercado Pago.
     ...(esHttpsPublico && input.email ? { payer: { email: input.email } } : {}),
     external_reference: input.userId,
     metadata: {
@@ -87,7 +81,6 @@ export async function crearPreferenciaMercadoPago(
       failure: `${cleanBaseUrl}/premium?mp_return=1`,
       pending: `${cleanBaseUrl}/premium?mp_return=1`,
     },
-    // Mercado Pago rechaza auto_return con error 400 si back_urls.success es http://localhost
     ...(esHttpsPublico ? { auto_return: 'approved' } : {}),
     statement_descriptor: 'BECABOT MX',
   }
@@ -111,9 +104,6 @@ export async function crearPreferenciaMercadoPago(
   return data
 }
 
-/**
- * Consulta un pago por su ID directamente en la API oficial de Mercado Pago (/v1/payments/{id}).
- */
 export async function consultarPagoMercadoPago(
   paymentId: string
 ): Promise<PagoMercadoPagoResponse> {

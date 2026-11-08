@@ -125,7 +125,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
 
     const finalizar = () => set({ isGenerating: false });
 
-    // 1. Interceptar intención de recordatorio antes del stream de búsqueda general
     const intencionRecordatorio = detectarIntencionRecordatorio(prompt, get().messages);
     if (intencionRecordatorio.esRecordatorio) {
       set((state) => ({
@@ -149,7 +148,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
           return { messages: copia };
         });
 
-        // Persistir en historial si está autenticado
         useChatHistoryStore.getState().persistTurn(prompt, resultado.mensaje);
       } catch (err: any) {
         set((state) => ({
@@ -164,7 +162,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
       return;
     }
 
-    // 2. Interceptar intención de Comparador de Becas (Exclusivo Plan Premium)
     const intencionComparador = detectarIntencionComparador(prompt);
     let messagesParaServidor = messagesWithUser.map(({ role, content }) => ({
       role,
@@ -199,7 +196,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
           return;
         }
 
-        // Usuario es Premium: enriquecemos el último mensaje para que genere tabla comparativa
         messagesParaServidor = [
           ...messagesParaServidor.slice(0, -1),
           { role: "user", content: intencionComparador.promptEnriquecido },
@@ -209,7 +205,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
       }
     }
 
-    // 3. Consulta normal a /api/chat (RAG + Web)
     let response: Response;
 
     try {
@@ -251,7 +246,6 @@ export const useAIStore = create<AIStore>((set, get) => ({
         }));
       });
 
-      // Si el usuario está autenticado, persistir el turno en PostgreSQL
       const msgsActuales = get().messages;
       const ultimoAsistente = msgsActuales[msgsActuales.length - 1];
       if (ultimoAsistente && ultimoAsistente.role === "assistant" && ultimoAsistente.content.trim()) {

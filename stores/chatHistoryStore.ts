@@ -64,7 +64,6 @@ export const useChatHistoryStore = create<ChatHistoryStore>((set, get) => ({
 
   startNewConversation: () => {
     const { isAuthenticated } = get()
-    // REGLA: Si no está loggeado, NO se permite abrir más chats
     if (!isAuthenticated) {
       return false
     }
@@ -104,13 +103,11 @@ export const useChatHistoryStore = create<ChatHistoryStore>((set, get) => ({
       let currentId = activeConversationId
 
       if (!currentId) {
-        // Crear nueva conversación con el primer mensaje
         currentId = await chatHistoryService.crearConversacion(userId, pregunta)
         if (!currentId) return
 
         set({ activeConversationId: currentId })
 
-        // Insertar en la lista local de conversaciones al principio
         const nuevaConv: ConversacionItem = {
           id_conversacion: currentId,
           title: pregunta.slice(0, 48),
@@ -120,10 +117,8 @@ export const useChatHistoryStore = create<ChatHistoryStore>((set, get) => ({
         set({ conversaciones: [nuevaConv, ...conversaciones] })
       }
 
-      // Guardar el par de mensajes
       await chatHistoryService.guardarParMensajes(currentId, pregunta, respuesta)
 
-      // Actualizar la fecha y reordenar arriba en la lista local
       set((state) => {
         const ahora = new Date().toISOString()
         const filtradas = state.conversaciones.filter((c) => c.id_conversacion !== currentId)
