@@ -92,6 +92,9 @@ body {
   font-size: 0.9375rem;
   line-height: 1.75;
   color: #111111;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .markdown > * + * {
@@ -217,8 +220,17 @@ body {
   margin-block: 1.25rem;
 }
 
+.markdown-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.5rem;
+}
+
 .markdown table {
   width: 100%;
+  min-width: max-content;
   border-collapse: collapse;
   font-size: 0.8125rem;
 }
@@ -231,12 +243,18 @@ body {
   padding: 0.625rem 0.875rem;
   background: #f0f0f0;
   border: 1.5px solid #111111;
+  vertical-align: top;
+  max-width: 18rem;
+  overflow-wrap: break-word;
 }
 
 .markdown td {
   padding: 0.625rem 0.875rem;
   color: #222222;
   border: 1.5px solid #111111;
+  vertical-align: top;
+  max-width: 18rem;
+  overflow-wrap: break-word;
 }
 
 @keyframes pulse {

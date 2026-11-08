@@ -9,7 +9,7 @@ type AIResponseProps = {
 
 export default function AIResponse({ response }: AIResponseProps) {
   return (
-    <div className="markdown">
+    <div className="markdown min-w-0 max-w-full">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -17,6 +17,11 @@ export default function AIResponse({ response }: AIResponseProps) {
             <a {...props} target="_blank" rel="noreferrer noopener">
               {children}
             </a>
+          ),
+          table: ({ children, ...props }) => (
+            <div className="markdown-table-wrapper">
+              <table {...props}>{children}</table>
+            </div>
           ),
         }}
       >

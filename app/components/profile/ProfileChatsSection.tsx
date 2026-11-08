@@ -164,7 +164,7 @@ export const ProfileChatsSection = ({
                           <div className="mb-1 flex items-center justify-between text-[10px] font-black uppercase tracking-wider opacity-70">
                             <span>{m.tipo === 'user' ? 'Tú' : 'BecaBot Asesor'}</span>
                           </div>
-                          <p className="whitespace-pre-wrap">{m.mensaje}</p>
+                          <p className="overflow-x-auto break-words whitespace-pre-wrap">{m.mensaje}</p>
                         </div>
                       ))}
                     </div>

@@ -28,8 +28,8 @@ export const ChatMessageItem = ({
   if (message.content === "") return null
 
   return (
-    <article className="rise-in relative rounded-2xl border-2 border-black bg-white p-5 shadow-[4px_4px_0px_#000000]">
-      <div className="flex flex-col gap-3.5">
+    <article className="rise-in relative min-w-0 max-w-full overflow-hidden rounded-2xl border-2 border-black bg-white p-5 shadow-[4px_4px_0px_#000000]">
+      <div className="flex min-w-0 flex-col gap-3.5">
         {/* Cabecera del mensaje sin icono, con estado de redacción o fuente */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2.5">
           <div className="flex items-center gap-2">
@@ -47,7 +47,7 @@ export const ChatMessageItem = ({
         </div>
 
         {/* Contenido Markdown con tipografía de alto contraste */}
-        <div className="relative">
+        <div className="relative min-w-0 max-w-full">
           <AIResponse response={message.content} />
           {isStreaming && (
             <span

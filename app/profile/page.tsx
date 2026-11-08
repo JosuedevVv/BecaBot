@@ -15,7 +15,6 @@ import { ProfileIdentityCard } from '../components/profile/ProfileIdentityCard'
 import { ProfilePlanCard } from '../components/profile/ProfilePlanCard'
 import { ProfileRemindersSection } from '../components/profile/ProfileRemindersSection'
 import { ProfileChatsSection } from '../components/profile/ProfileChatsSection'
-import { PremiumSimulatorBanner } from '../components/premium/PremiumSimulatorBanner'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -107,19 +106,6 @@ export default function ProfilePage() {
           <span>Ir al Asesor IA</span>
           <span>→</span>
         </Link>
-      </div>
-
-      {/* Simulador de Suscripción para Pruebas Inmediatas */}
-      <div className="mt-6">
-        <PremiumSimulatorBanner
-          onStatusChange={async () => {
-            if (userId) {
-              const result = await profileService.obtenerDatosPerfil(userId)
-              setSuscripcion(result.suscripcion)
-              setAlertas(result.alertas)
-            }
-          }}
-        />
       </div>
 
       {/* Fila Superior: Identidad + Plan y Métricas */}

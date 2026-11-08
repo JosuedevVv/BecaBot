@@ -63,7 +63,7 @@ export const ChatMessageList = () => {
       onScroll={handleScroll}
       className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 pb-8 pt-2"
     >
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+      <div className="mx-auto flex min-w-0 w-full max-w-2xl flex-col gap-6">
         {/* Barra Superior de Sesión */}
         <div className="sticky top-0 z-10 flex items-center justify-between rounded-xl border-2 border-black bg-white px-4 py-2.5 shadow-[3px_3px_0px_#000000]">
           <div className="flex items-center gap-2">
