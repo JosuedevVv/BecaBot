@@ -10,7 +10,7 @@ import Link from "next/link"
 const SUGERENCIAS = [
   "¿Qué becas hay disponibles?",
   "¿Cuáles son los requisitos?",
-  "¿Cómo es el proceso de aplicar?",
+  "Compara dos becas de licenciatura",
   "¿Cuáles son las fechas límite?",
 ]
 

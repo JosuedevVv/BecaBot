@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { comparison, freePlan, premiumPlan } from "@/data/premium"
 import { PremiumSimulatorBanner } from "../components/premium/PremiumSimulatorBanner"
+import { MercadoPagoCheckoutButton } from "../components/premium/MercadoPagoCheckoutButton"
 
 export default function Premium() {
   return (
@@ -134,12 +135,7 @@ export default function Premium() {
             </ul>
           </div>
 
-          <Link
-            href="/signup"
-            className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-xl border-2 border-black bg-black px-4 text-[14px] font-black text-white shadow-[4px_4px_0px_#000000] transition-all hover:bg-neutral-800 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-          >
-            {premiumPlan.cta} →
-          </Link>
+          <MercadoPagoCheckoutButton />
         </article>
       </div>
 

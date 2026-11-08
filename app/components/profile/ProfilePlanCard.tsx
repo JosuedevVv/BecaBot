@@ -52,8 +52,8 @@ export const ProfilePlanCard = ({
           </h3>
           <p className="mt-1 text-[13.5px] font-semibold text-neutral-700">
             {esPremium
-              ? 'Tienes habilitadas alertas automáticas por correo, seguimiento de convocatorias y prioridad RAG.'
-              : 'Consultas esenciales de becas en México sin costo. Actualiza para activar recordatorios automáticos.'}
+              ? 'Tienes habilitadas alertas automáticas por correo, recordatorios desde el chat y el comparador de becas.'
+              : 'Consultas ilimitadas de becas en México sin costo. Mejora a Premium para usar el comparador de becas y alertas por correo.'}
           </p>
         </div>
 
@@ -109,7 +109,7 @@ export const ProfilePlanCard = ({
             href="/premium"
             className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl border-2 border-black bg-black px-4 text-xs font-black text-white shadow-[3px_3px_0px_#000000] hover:bg-neutral-800"
           >
-            <span>Mejorar a Premium por $49 MXN/mes →</span>
+            <span>Mejorar a Premium por $59 MXN/mes →</span>
           </Link>
         )}
       </div>

@@ -3,7 +3,12 @@ import type { ChatEvent, ChatFuente, OrigenRespuesta } from "@/lib/chat-stream";
 import { leerStreamNdjson } from "@/lib/ndjson-reader";
 import { useChatHistoryStore } from "./chatHistoryStore";
 import { detectarIntencionRecordatorio } from "@/lib/reminder-intent";
+import {
+  construirMensajeBloqueoComparador,
+  detectarIntencionComparador,
+} from "@/lib/comparison-intent";
 import { reminderService } from "@/services/ReminderService";
+import { subscriptionService } from "@/services/SubscriptionService";
 
 export type Message = {
   id: string;
@@ -159,7 +164,52 @@ export const useAIStore = create<AIStore>((set, get) => ({
       return;
     }
 
-    // 2. Consulta normal a /api/chat (RAG + Web)
+    // 2. Interceptar intención de Comparador de Becas (Exclusivo Plan Premium)
+    const intencionComparador = detectarIntencionComparador(prompt);
+    let messagesParaServidor = messagesWithUser.map(({ role, content }) => ({
+      role,
+      content,
+    }));
+
+    if (intencionComparador.esComparacion) {
+      try {
+        const estadoSub = await subscriptionService.obtenerEstadoSuscripcion();
+        const estaAutenticado = estadoSub.estado !== "sin_sesion";
+
+        if (!estadoSub.esPremium) {
+          const msgBloqueo = construirMensajeBloqueoComparador(estaAutenticado);
+
+          set((state) => {
+            const idx = state.messages.length - 1;
+            const copia = [...state.messages];
+            copia[idx] = {
+              ...copia[idx],
+              content: msgBloqueo,
+              phase: null,
+              source: "rag",
+            };
+            return { messages: copia };
+          });
+
+          if (estaAutenticado) {
+            useChatHistoryStore.getState().persistTurn(prompt, msgBloqueo);
+          }
+
+          finalizar();
+          return;
+        }
+
+        // Usuario es Premium: enriquecemos el último mensaje para que genere tabla comparativa
+        messagesParaServidor = [
+          ...messagesParaServidor.slice(0, -1),
+          { role: "user", content: intencionComparador.promptEnriquecido },
+        ];
+      } catch (err) {
+        console.error("Error verificando suscripción para comparador:", err);
+      }
+    }
+
+    // 3. Consulta normal a /api/chat (RAG + Web)
     let response: Response;
 
     try {
@@ -169,7 +219,7 @@ export const useAIStore = create<AIStore>((set, get) => ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages: messagesWithUser.map(({ role, content }) => ({ role, content })),
+          messages: messagesParaServidor,
         }),
       });
     } catch {

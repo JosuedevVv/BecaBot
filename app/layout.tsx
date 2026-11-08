@@ -6,7 +6,7 @@ type LayoutProps = {
 }
 
 export const metadata = {
-  title: 'BecaBot — Asesor de Becas en México',
+  title: 'BecaBot',
   description:
     'Encuentra convocatorias, requisitos y fechas límite de becas en México con respuestas verificadas por RAG y citas oficiales.',
 }

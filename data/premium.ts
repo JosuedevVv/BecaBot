@@ -8,12 +8,25 @@ export const freePlan = {
   name: "Becario",
   price: "$0",
   cadence: "para siempre",
-  summary: "Orientación libre sobre cualquier beca, requisito o fecha límite.",
-  cta: "Tu plan actual",
+  summary: "Orientación libre e ilimitada sobre cualquier beca, requisito o fecha límite en México.",
+  cta: "Ir al Asesor IA",
   features: [
-    { label: "4 consultas diarias", detail: "Se renuevan cada día a las 00:00 h." },
-    { label: "Requisitos y plazos", detail: "Orientación general de cualquier convocatoria." },
-    { label: "Sugerencias de beca", detail: "Recomendaciones según lo que describes." },
+    {
+      label: "Consultas ilimitadas",
+      detail: "Pregunta todo lo que necesites sobre becas en México, sin cortes ni límite diario.",
+    },
+    {
+      label: "Requisitos y plazos",
+      detail: "Orientación general y verificada de cualquier convocatoria nacional.",
+    },
+    {
+      label: "Sugerencias de beca",
+      detail: "Recomendaciones según tu nivel académico y lo que describes.",
+    },
+    {
+      label: "Historial de conversaciones",
+      detail: "Guarda y retoma tus sesiones de consulta al iniciar sesión.",
+    },
   ] as PremiumFeature[],
 }
 
@@ -22,14 +35,25 @@ export const premiumPlan = {
   name: "Premium",
   price: "$59",
   cadence: "MXN al mes",
-  summary: "Todo lo de Becario, más el seguimiento de tu búsqueda.",
+  summary: "Todo lo de Becario, más alertas automáticas por correo y comparador de becas.",
   cta: "Empezar con Premium",
   features: [
-    { label: "Consultas ilimitadas", detail: "Pregunta todo lo que necesites, sin cortes." },
-    { label: "Alertas de fecha límite", detail: "Aviso antes de que cierre cada convocatoria." },
-    { label: "Comparador de becas", detail: "Contrasta monto, requisitos y elegibilidad." },
-    { label: "Revisión de expediente", detail: "Revisamos tus documentos y requisitos faltantes." },
-    { label: "Exportar a PDF", detail: "Descarga tu plan de solicitud en un solo archivo." },
+    {
+      label: "Consultas ilimitadas",
+      detail: "Pregunta todo lo que necesites sobre becas en México, sin cortes.",
+    },
+    {
+      label: "Recordatorios desde el chat",
+      detail: "Pide en el chat agendar cualquier beca y adminístrala desde tu perfil.",
+    },
+    {
+      label: "Alertas de fecha límite",
+      detail: "Avisos automáticos a tu correo (30, 7 y 1 día antes del cierre de la convocatoria).",
+    },
+    {
+      label: "Comparador de becas",
+      detail: "Contrasta monto en MXN, requisitos, plazos y elegibilidad entre becas.",
+    },
   ] as PremiumFeature[],
 }
 
@@ -40,12 +64,12 @@ export type ComparisonRow = {
 }
 
 export const comparison: ComparisonRow[] = [
-  { label: "Consultas por día", free: "4", premium: "Ilimitadas" },
-  { label: "Historial de consultas", free: "7 días", premium: "Sin límite" },
-  { label: "Alertas de fecha límite", free: "—", premium: "Incluidas" },
-  { label: "Comparador de becas", free: "—", premium: "Incluido" },
-  { label: "Revisión de expediente", free: "—", premium: "Incluida" },
-  { label: "Exportar a PDF", free: "—", premium: "Incluido" },
+  { label: "Consultas sobre becas en México", free: "Ilimitadas", premium: "Ilimitadas" },
+  { label: "Requisitos, plazos y sugerencias", free: "Incluidos", premium: "Incluidos" },
+  { label: "Historial de conversaciones", free: "Incluido (con cuenta)", premium: "Sin límite" },
+  { label: "Agendar recordatorios desde el chat", free: "—", premium: "Incluido" },
+  { label: "Alertas de fecha límite por correo", free: "—", premium: "Incluidas (30, 7 y 1 día)" },
+  { label: "Comparador de becas (montos y requisitos)", free: "—", premium: "Exclusivo Premium" },
 ]
 
 export const plans = [freePlan, premiumPlan]
