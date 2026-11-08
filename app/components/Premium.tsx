@@ -1,12 +1,11 @@
 import Link from "next/link"
-import { Seal } from "./Seal"
 
 export const PremiumBadge = ({ className = "" }: { className?: string }) => (
-  <span className={`inline-flex items-center gap-1.5 ${className}`}>
-    <Seal size={13} />
-    <span className="text-[10px] font-medium uppercase tracking-[0.2em] foil-text">
-      Premium
-    </span>
+  <span
+    className={`inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.2em] text-accent-deep ${className}`}
+  >
+    <span className="size-1 rounded-full bg-accent-deep" />
+    Premium
   </span>
 )
 
@@ -33,10 +32,9 @@ export const PremiumCTA = ({
 }: PremiumCTAProps) => (
   <Link
     href={href}
-    className={`foil-fill foil-fill-lift shadow-foil inline-flex items-center justify-center rounded-full font-medium text-foil-vault transition-transform duration-150 active:scale-[0.97] ${sizes[size]} ${block ? "w-full" : ""
+    className={`shadow-foil inline-flex items-center justify-center rounded-full bg-accent font-medium text-foil-vault transition-all duration-200 hover:bg-accent-deep active:scale-[0.97] ${sizes[size]} ${block ? "w-full" : ""
       } ${className}`}
   >
-    <Seal size={size === "lg" ? 16 : 13} tone="invert" />
     {children}
   </Link>
 )

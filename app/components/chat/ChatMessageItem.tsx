@@ -1,0 +1,123 @@
+import AIResponse from "../AIResponse"
+import { SourceBadge } from "../SourceBadge"
+import type { Message } from "@/stores/chatStore"
+import { useAIStore } from "@/stores/chatStore"
+
+export const ChatMessageItem = ({
+  message,
+  isStreaming = false,
+}: {
+  message: Message
+  isStreaming?: boolean
+}) => {
+  const generateResponse = useAIStore((s) => s.generateResponse)
+
+  if (message.role === "user") {
+    return (
+      <div className="rise-in flex flex-col items-end gap-1.5">
+        <span className=" rounded border border-black bg-white px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-black">
+          Tu consulta
+        </span>
+        <div className="max-w-[85%] rounded-2xl rounded-br-[4px] border-2 border-black bg-black px-4 py-3 text-[14.5px] font-bold leading-relaxed text-white shadow-[4px_4px_0px_#d4d4d4]">
+          {message.content}
+        </div>
+      </div>
+    )
+  }
+
+  if (message.content === "") return null
+
+  return (
+    <article className="rise-in relative rounded-2xl border-2 border-black bg-white p-5 shadow-[4px_4px_0px_#000000]">
+      <div className="flex flex-col gap-3.5">
+        {/* Cabecera del mensaje sin icono, con estado de redacción o fuente */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2.5">
+          <div className="flex items-center gap-2">
+            <span className="font-display text-[13.5px] font-black uppercase tracking-tight text-black">
+              BecaBot Asesor
+            </span>
+            {isStreaming && (
+              <span className="inline-flex items-center gap-1 rounded border border-black bg-neutral-100 px-2 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-black">
+                <span className="size-1.5 animate-pulse rounded-full bg-black" />
+                Redactando…
+              </span>
+            )}
+          </div>
+          {message.source && <SourceBadge source={message.source} />}
+        </div>
+
+        {/* Contenido Markdown con tipografía de alto contraste */}
+        <div className="relative">
+          <AIResponse response={message.content} />
+          {isStreaming && (
+            <span
+              aria-hidden
+              className="ml-1 inline-block h-4 w-2 animate-pulse bg-black align-middle"
+            />
+          )}
+        </div>
+
+        {/* Fuentes oficiales citadas y botón de acción rápida para recordatorio */}
+        {message.citations && message.citations.length > 0 && (
+          <div className="flex flex-col gap-2 rounded-xl border-2 border-black bg-neutral-50 p-3.5 shadow-[2px_2px_0px_#000000]">
+            <div className="flex items-center justify-between">
+              <span className="text-[10.5px] font-black uppercase tracking-wider text-black">
+                Fuentes oficiales consultadas:
+              </span>
+              <span className="text-[9.5px] font-bold text-neutral-500">
+                Plan Premium: Alertas por correo
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {message.citations.map((fuente) => (
+                <div key={fuente.title} className="flex items-center gap-1">
+                  {fuente.url ? (
+                    <a
+                      href={fuente.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-1 rounded-lg border-2 border-black bg-white px-2.5 py-1 text-[12px] font-black text-black shadow-[2px_2px_0px_#000000] transition-all hover:bg-black hover:text-white"
+                    >
+                      <span>{fuente.title}</span>
+                      <span className="text-[10px]">↗</span>
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center rounded-lg border-2 border-black bg-white px-2.5 py-1 text-[12px] font-bold text-black">
+                      {fuente.title}
+                    </span>
+                  )}
+
+                  {/* Botón rápido para agendar recordatorio de esta beca */}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      generateResponse(`Hazme un recordatorio para la beca ${fuente.title}`)
+                    }
+                    title="Agendar recordatorio automático a tu correo (Exclusivo Premium)"
+                    className="inline-flex items-center gap-1 rounded-lg border-2 border-black bg-neutral-100 px-2 py-1 text-[11px] font-black text-black hover:bg-black hover:text-white"
+                  >
+                    <span>🔔 Recordatorio</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {message.source === "web" && message.knowledge && (
+          <div className="flex items-center gap-2 rounded-lg border-2 border-black bg-neutral-100 px-3 py-1.5 text-[11.5px] font-black text-black">
+            <span className="size-2 shrink-0 rounded-full bg-emerald-600" />
+            <span>
+              Conocimiento verificado aprendido y guardado en la Base RAG de México.
+            </span>
+          </div>
+        )}
+
+        <div className="border-t-2 border-neutral-200 pt-2 text-[10px] font-black uppercase tracking-wider text-neutral-600">
+          Orientación informativa · Verifica siempre la convocatoria oficial
+        </div>
+      </div>
+    </article>
+  )
+}

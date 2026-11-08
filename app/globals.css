@@ -1,74 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Outfit', 'Inter', ui-sans-serif, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  --color-bg: #100e12;
-  --color-surface: #17151b;
-  --color-surface-2: #1f1c24;
-  --color-surface-3: #29252e;
-  --color-input: #0c0a0f;
-  --color-line: #2b2830;
-  --color-line-soft: rgba(242, 240, 246, 0.08);
+  /* ── Airbnb-style Monochromatic Neutral Palette con Alto Contraste Garantizado ─ */
+  --color-bg: #ffffff;
+  --color-surface: #f7f7f7;
+  --color-surface-2: #eeeeee;
+  --color-surface-3: #e0e0e0;
+  --color-input: #ffffff;
+  --color-line: #e2e2e2;
+  --color-line-soft: rgba(17, 17, 17, 0.08);
+  --color-line-strong: #111111;
 
-  --color-text: #f0ede8;
-  --color-secondary: #bdb6a9;
-  --color-tertiary: #8a8478;
-  --color-muted: #666056;
+  /* Texto siempre de máximo contraste sobre blanco y superficies claras */
+  --color-text: #111111;
+  --color-secondary: #2c2c2c;
+  --color-tertiary: #525252;
+  --color-muted: #6e6e6e;
 
-  --color-primary: #100e12;
-  --color-accent: #e8d5b0;
-  --color-accent-deep: #e8d5b0;
-  --color-accent-dim: #c4b08a;
-  --color-accent-soft: #221b1a;
-  --color-ring: rgba(232, 213, 176, 0.35);
+  /* Tinta negra para elementos oscuros */
+  --color-ink: #111111;
+  --color-primary: #111111;
+  --color-accent: #111111;
+  --color-accent-deep: #111111;
+  --color-accent-dim: #3a3a3a;
+  --color-accent-soft: #f2f2f2;
+  --color-ring: rgba(17, 17, 17, 0.3);
 
-  --color-success: #8aa06f;
-  --color-danger: #c08a76;
+  --color-foil-vault: #ffffff;
+  --color-foil-wash: rgba(17, 17, 17, 0.05);
+  --color-foil-deep: #222222;
+  --color-foil-mid: #484848;
 
-  /* Foil stamping — theChampagne accent read as gold leaf on an official document. */
-  --color-foil-high: #f6ead0;
-  --color-foil-mid: #d9bd8b;
-  --color-foil-deep: #a9854a;
-  --color-foil-wash: rgba(169, 133, 74, 0.1);
-  --color-foil-vault: #1b1713;
+  --color-success: #15693b;
+  --color-danger: #b92a10;
 
-  --foil-gradient: linear-gradient(135deg,
-      #f6ead0 0%,
-      #d9bd8b 26%,
-      #a9854a 52%,
-      #e8d5b0 74%,
-      #b8924f 100%);
-
-  --radius-card: 14px;
-  --radius-control: 10px;
-  --radius-bubble: 16px;
+  --radius-card: 16px;
+  --radius-control: 12px;
+  --radius-bubble: 18px;
   --radius-seal: 999px;
 
   --shadow-elevated:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 1px 2px -1px rgba(0, 0, 0, 0.5),
-    0 6px 16px -4px rgba(0, 0, 0, 0.5);
+    0 0 0 1px rgba(17, 17, 17, 0.08),
+    0 4px 12px rgba(17, 17, 17, 0.06),
+    0 12px 28px -8px rgba(17, 17, 17, 0.1);
   --shadow-card:
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 1px 2px -1px rgba(0, 0, 0, 0.45);
-  --shadow-foil:
-    0 0 0 1px rgba(169, 133, 74, 0.3),
-    0 6px 18px -10px rgba(169, 133, 74, 0.55);
+    0 0 0 1px rgba(17, 17, 17, 0.08),
+    0 2px 6px rgba(17, 17, 17, 0.05);
 }
 
 ::selection {
-  background: rgba(232, 213, 176, 0.24);
-  color: var(--color-text);
+  background: #111111;
+  color: #ffffff;
 }
 
 body {
   background-color: var(--color-bg);
-  background-image: radial-gradient(1100px 480px at 50% -140px,
-      rgba(232, 213, 176, 0.06),
-      transparent 65%);
   color: var(--color-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -77,102 +67,35 @@ body {
 
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-ring);
-  border-radius: 4px;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #111111;
+  border-radius: 6px;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-surface-3) transparent;
+  scrollbar-color: #cccccc transparent;
 }
 
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--color-surface-3);
+  background: #cccccc;
   border-radius: 999px;
 }
 
-/* ── Foil: the accent behaves as gold leaf stamped onto paper ────────────── */
-
-@utility foil-text {
-  background-image: var(--foil-gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* A true gradient hairline ring, so premium edges catch light like metal. */
-@utility foil-ring {
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--foil-gradient);
-    opacity: 0.42;
-    pointer-events: none;
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-}
-
-@utility foil-ring-lit {
-  &::after {
-    opacity: 0.9;
-  }
-}
-
-@utility foil-surface {
-  background-color: var(--color-foil-vault);
-  background-image: radial-gradient(120% 90% at 50% -30%,
-      rgba(232, 213, 176, 0.09),
-      transparent 62%);
-}
-
-@utility foil-fill {
-  background-image: var(--foil-gradient);
-  background-size: 160% 160%;
-  background-position: 22% 18%;
-  transition: background-position 320ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-@utility foil-fill-lift {
-  &:hover {
-    background-position: 78% 82%;
-  }
-}
-
-/* Hairline that fades at both ends — used to detach the header from the page. */
-@utility rule-fade {
-  background-image: linear-gradient(90deg,
-      transparent,
-      var(--color-line-soft) 18%,
-      var(--color-line-soft) 82%,
-      transparent);
-}
+/* ── Editorial markdown con contraste perfecto ─────────────────────────── */
 
 .markdown {
-  font-size: 0.875rem;
-  line-height: 1.7;
-  color: var(--color-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #111111;
 }
 
-.markdown>*+* {
-  margin-top: 1rem;
+.markdown > * + * {
+  margin-top: 0.875rem;
 }
 
 .markdown h1,
@@ -180,47 +103,47 @@ body {
 .markdown h3,
 .markdown h4 {
   font-family: var(--font-display);
-  color: var(--color-text);
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  color: #111111;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
 .markdown h1 {
-  font-size: 1.375rem;
+  font-size: 1.35rem;
 }
 
 .markdown h2 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 .markdown h3 {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
 }
 
 .markdown h4 {
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .markdown p {
   text-wrap: pretty;
+  color: #222222;
 }
 
 .markdown strong {
-  color: var(--color-text);
-  font-weight: 600;
+  color: #000000;
+  font-weight: 700;
 }
 
 .markdown a {
-  color: var(--color-accent-deep);
+  color: #111111;
+  font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: rgba(163, 128, 63, 0.3);
   text-underline-offset: 3px;
-  transition: text-decoration-color 150ms ease-out;
 }
 
 .markdown a:hover {
-  text-decoration-color: var(--color-accent-deep);
+  color: #444444;
 }
 
 .markdown ul {
@@ -228,63 +151,69 @@ body {
   padding-left: 0;
 }
 
-.markdown ul>li {
+.markdown ul > li {
   position: relative;
   padding-left: 1.25rem;
+  color: #222222;
 }
 
-.markdown ul>li::before {
+.markdown ul > li::before {
   content: '';
   position: absolute;
   left: 0.125rem;
-  top: 0.5rem;
-  width: 0.375rem;
-  height: 0.375rem;
+  top: 0.65rem;
+  width: 0.3rem;
+  height: 0.3rem;
   border-radius: 999px;
-  border: 1px solid var(--color-accent-deep);
+  background: #111111;
 }
 
 .markdown ol {
   list-style: decimal;
   padding-left: 1.25rem;
+  color: #222222;
 }
 
-.markdown li+li {
-  margin-top: 0.375rem;
+.markdown li + li {
+  margin-top: 0.35rem;
 }
 
 .markdown code {
   font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 0.8em;
+  font-size: 0.82em;
   padding: 0.15em 0.4em;
   border-radius: 6px;
-  background: var(--color-input);
-  color: var(--color-accent-deep);
+  background: #f0f0f0;
+  color: #111111;
+  border: 1px solid #d0d0d0;
+  font-weight: 600;
 }
 
 .markdown pre {
   padding: 0.875rem 1rem;
   border-radius: var(--radius-control);
-  background: var(--color-input);
-  border: 1px solid var(--color-line);
+  background: #f7f7f7;
+  border: 2px solid #111111;
   overflow-x: auto;
 }
 
 .markdown pre code {
   background: transparent;
   padding: 0;
-  color: var(--color-secondary);
+  border: none;
+  color: #111111;
 }
 
 .markdown blockquote {
-  border-left: 2px solid var(--color-line);
+  border-left: 3px solid #111111;
   padding-left: 1rem;
-  color: var(--color-tertiary);
+  color: #444444;
+  font-weight: 500;
 }
 
 .markdown hr {
   border: none;
-  border-top: 1px solid var(--color-line-soft);
+  border-top: 2px solid #111111;
   margin-block: 1.25rem;
 }
 
@@ -297,79 +226,47 @@ body {
 .markdown th {
   text-align: left;
   font-family: var(--font-display);
-  font-weight: 500;
-  color: var(--color-text);
+  font-weight: 700;
+  color: #111111;
   padding: 0.625rem 0.875rem;
-  background: var(--color-surface-3);
-  border: 1px solid var(--color-line);
+  background: #f0f0f0;
+  border: 1.5px solid #111111;
 }
 
 .markdown td {
   padding: 0.625rem 0.875rem;
-  color: var(--color-secondary);
-  border: 1px solid var(--color-line-soft);
-}
-
-.markdown tr:first-child th:first-child {
-  border-radius: 8px 0 0 0;
-}
-
-.markdown tr:first-child th:last-child {
-  border-radius: 0 8px 0 0;
-}
-
-.markdown thead+tbody tr:last-child td:first-child {
-  border-radius: 0 0 0 8px;
-}
-
-.markdown thead+tbody tr:last-child td:last-child {
-  border-radius: 0 0 8px 0;
+  color: #222222;
+  border: 1.5px solid #111111;
 }
 
 @keyframes pulse {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0.35;
     transform: translateY(0);
   }
-
   50% {
     opacity: 1;
     transform: translateY(-2px);
   }
 }
 
-@keyframes status-glow {
-
-  0%,
-  100% {
-    opacity: 0.4;
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-
-  50% {
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Slow rake of light across the gold leaf — 7s, barely perceptible. */
-@keyframes foil-sheen {
-
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 0.75;
-  }
+@utility rise-in {
+  animation: rise-in 240ms cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

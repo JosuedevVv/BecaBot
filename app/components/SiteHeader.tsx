@@ -1,59 +1,129 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Seal } from "./Seal"
-
-const nav = [
-  { label: "Asesor", href: "/" },
-  { label: "Convocatorias", href: "/comming-soon" },
-  { label: "Mi perfil", href: "/comming-soon" },
-  { label: "Cómo opera", href: "/como-opera" },
-]
+import { HeaderUserActions } from "./header/HeaderUserActions"
+import { authService } from "@/services/AuthService"
+import { insforge } from "@/lib/insforge"
 
 export const SiteHeader = () => {
   const pathname = usePathname()
+  const isChatPage = pathname === "/asesor"
+  const [isPremium, setIsPremium] = useState(false)
+
+  useEffect(() => {
+    let mounted = true
+
+    const checkPremiumStatus = async () => {
+      try {
+        const { data } = await authService.obtenerUsuarioActual()
+        if (!mounted) return
+        if (data?.user?.id) {
+          const { data: rpcPremium } = await insforge.database.rpc("es_premium", {
+            uid: data.user.id,
+          })
+          if (mounted) setIsPremium(!!rpcPremium)
+        } else {
+          if (mounted) setIsPremium(false)
+        }
+      } catch {
+        if (mounted) setIsPremium(false)
+      }
+    }
+
+    checkPremiumStatus()
+
+    const handleUpdate = () => checkPremiumStatus()
+    window.addEventListener("becabot:subscription-updated", handleUpdate)
+
+    return () => {
+      mounted = false
+      window.removeEventListener("becabot:subscription-updated", handleUpdate)
+    }
+  }, [pathname])
+
+  // Si el usuario es Premium, filtramos la pestaña "Planes" del menú de navegación
+  const nav = [
+    { label: "Inicio", href: "/" },
+    { label: "Asesor IA", href: "/asesor" },
+    ...(!isPremium ? [{ label: "Planes", href: "/premium" }] : []),
+  ]
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
-      <div className="rule-fade h-px" />
+    <header className="fixed inset-x-0 top-0 z-50 h-20 border-b-2 border-black bg-white shadow-sm">
+      <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between px-5 sm:px-6">
+        <Link
+          href="/"
+          aria-label="BecaBot — inicio"
+          className="group flex flex-col transition-transform hover:scale-105 active:scale-95"
+        >
+          <div className="flex items-center gap-2">
+            <span className="font-display text-2xl font-black tracking-tight text-black">
+              BecaBot
+            </span>
+            <span className="rounded-md border border-black bg-black px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white">
+              MÉXICO
+            </span>
+          </div>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-600">
+            Orientación Oficial
+          </span>
+        </Link>
 
-      <div className="flex justify-center px-4 pt-3.5 sm:px-6">
-        <div className="pointer-events-auto flex h-11 max-w-full items-center gap-0.5 rounded-full border border-line-soft bg-bg/55 p-1 pl-1.5 shadow-elevated backdrop-blur-xl">
-          <Link
-            href="/"
-            aria-label="BecaBot"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-150 hover:bg-surface-2"
-          >
-            <Seal size={22} />
-          </Link>
+        <nav
+          aria-label="Principal"
+          className="hidden items-center gap-2 md:flex"
+        >
+          {nav.map((item) => {
+            const active =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href)
 
-          <nav className="ml-1 hidden items-center md:flex" aria-label="Principal">
-            {nav.map((item) => {
-              const active = pathname === item.href
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`rounded-full px-4 py-2 text-[14px] font-bold transition-all ${
+                  active
+                    ? "border-2 border-black bg-black text-white shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
+                    : "border-2 border-transparent text-neutral-800 hover:border-black hover:bg-neutral-100 hover:text-black"
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
 
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`rounded-full px-3 py-1.5 text-[13px] transition-colors duration-150 ${active
-                    ? "bg-surface-2 text-text"
-                    : "text-tertiary hover:bg-surface-2/60 hover:text-secondary"
-                    }`}
-                >
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
-          <Link
-            href="/premium"
-            className="foil-ring foil-ring-lit group ml-0.5 flex h-8 items-center gap-1.5 rounded-full px-2.5 text-[12px] font-medium text-accent-deep transition-colors duration-150 hover:bg-surface-2"
-          >
-            <Seal size={12} />
-            Premium
-          </Link>
+        <div className="flex items-center gap-3.5">
+          {/* Componente reactivo al estado de autenticación */}
+          <HeaderUserActions />
+
+          {/* Botón contextual de acción derecha */}
+          {isChatPage ? (
+            // Si está en el chat y NO es premium, muestra el acceso a Planes Premium
+            !isPremium && (
+              <Link
+                href="/premium"
+                className="inline-flex h-10 items-center gap-2 rounded-full border-2 border-black bg-white px-4 text-[13px] font-extrabold text-black shadow-[2px_2px_0px_#000000] transition-all hover:bg-neutral-100 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+              >
+                <span>Planes Premium</span>
+                <span className="text-xs">↗</span>
+              </Link>
+            )
+          ) : (
+            // Si está en otra vista, muestra el botón para ir al Asesor IA
+            <Link
+              href="/asesor"
+              className="inline-flex h-10 items-center gap-2 rounded-full border-2 border-black bg-black px-5 text-[13.5px] font-extrabold text-white shadow-[3px_3px_0px_#555555] transition-all hover:bg-neutral-800 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            >
+              <span>Preguntar al Asesor</span>
+              <span>→</span>
+            </Link>
+          )}
         </div>
       </div>
     </header>

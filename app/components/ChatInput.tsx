@@ -1,7 +1,6 @@
 'use client'
 
 import { useAIStore } from '@/stores/chatStore'
-import { Icon } from './Icon'
 
 export const ChatInput = () => {
   const prompt = useAIStore((store) => store.prompt)
@@ -35,17 +34,13 @@ export const ChatInput = () => {
   const armed = prompt.trim().length > 0
 
   return (
-    <div className="relative z-10 px-2 pb-5 pt-2">
+    <div className="relative z-10 px-2 pb-6 pt-2">
       <div className="pointer-events-none absolute inset-x-0 -top-16 h-16 bg-gradient-to-b from-transparent to-bg" />
 
       <form
         onSubmit={handleSubmit}
-        className="mx-auto flex max-w-2xl items-end gap-2 rounded-card border border-line bg-surface-2 px-3 py-2.5 shadow-elevated transition-colors duration-200 focus-within:border-accent-deep/40"
+        className="mx-auto flex max-w-2xl items-end gap-2.5 rounded-card border border-line bg-surface px-4 py-2.5 shadow-elevated transition-colors duration-200 focus-within:border-accent-deep/50"
       >
-        <span className="shrink-0 pb-2.5 text-accent-deep/70">
-          <Icon name="compass" className="size-5" />
-        </span>
-
         <textarea
           value={prompt}
           onChange={handleChange}
@@ -56,8 +51,9 @@ export const ChatInput = () => {
             }
           }}
           rows={1}
-          className="max-h-24 min-h-6 flex-1 resize-none self-center bg-transparent px-1 py-1 text-[15px] leading-6 text-text outline-none placeholder:text-tertiary"
-          placeholder="Busca una beca, requisito o plazo…"
+          aria-label="Escribe tu consulta sobre becas"
+          className="max-h-24 min-h-6 flex-1 resize-none self-center bg-transparent py-1 text-[15px] leading-6 text-text outline-none placeholder:text-muted"
+          placeholder="Pregunta por una beca, un requisito o una fecha…"
         />
 
         <button
@@ -66,8 +62,8 @@ export const ChatInput = () => {
           aria-label="Enviar consulta"
           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
             armed
-              ? "bg-accent-deep text-accent-soft shadow-card active:scale-[0.97]"
-              : "border border-line bg-input text-tertiary"
+              ? "bg-accent-deep text-foil-vault shadow-card hover:bg-accent active:scale-[0.96]"
+              : "border border-line bg-input text-muted"
           }`}
         >
           <svg
@@ -76,6 +72,7 @@ export const ChatInput = () => {
             viewBox="0 0 24 24"
             strokeWidth="1.8"
             stroke="currentColor"
+            aria-hidden
             className="size-5"
           >
             <path

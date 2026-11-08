@@ -9,11 +9,10 @@ export const GraduationCap = ({ size = 14, className = "" }: GraduationCapProps)
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      rotate={80}
-      strokeWidth="0.5"
+      strokeWidth="1.1"
       stroke="currentColor"
       aria-hidden
-      className={`shrink-0 text-shadow-accent-dim ${className}`}
+      className={`shrink-0 ${className}`}
       style={{ width: size, height: size }}
     >
       <path

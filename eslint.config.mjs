@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Edge functions target Deno, not the Next.js app.
+    "insforge/**",
   ]),
 ]);
 

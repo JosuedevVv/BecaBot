@@ -1,16 +1,17 @@
-import { Welcome } from "./components/Welcome"
-import { InfoPanel } from "./components/InfoPanel"
+import { LandingHero } from './components/landing/LandingHero'
+import { LandingStatsBar } from './components/landing/LandingStatsBar'
+import { LandingHowItWorks } from './components/landing/LandingHowItWorks'
+import { LandingCategoriesGrid } from './components/landing/LandingCategoriesGrid'
+import { LandingFooterCta } from './components/landing/LandingFooterCta'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <section className="mx-auto grid h-full w-full max-w-7xl grid-cols-1 px-5 pt-16 lg:grid-cols-[290px_minmax(0,1fr)] lg:gap-8">
-      <aside className="hidden min-h-0 overflow-y-auto pb-6 lg:block">
-        <InfoPanel />
-      </aside>
-
-      <div className="grid min-h-0 grid-rows-[minmax(0,1fr)] overflow-hidden">
-        <Welcome />
-      </div>
-    </section>
+    <div className="flex flex-col">
+      <LandingHero />
+      <LandingStatsBar />
+      <LandingHowItWorks />
+      <LandingCategoriesGrid />
+      <LandingFooterCta />
+    </div>
   )
 }

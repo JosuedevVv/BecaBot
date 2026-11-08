@@ -1,9 +1,27 @@
-import { aiService } from "@/services/AIService";
+import { chatService } from "@/services/ChatService";
+import type { ChatMessage } from "@/lib/chat-stream";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  let messages: ChatMessage[] = [];
 
-  const result = aiService.generateResponse(messages);
+  try {
+    const body = await req.json();
+    if (Array.isArray(body?.messages)) {
+      messages = body.messages;
+    }
+  } catch {
+    return Response.json({ error: "JSON inválido" }, { status: 400 });
+  }
 
-  return result.toTextStreamResponse();
+  const stream = chatService.responder(messages);
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "application/x-ndjson; charset=utf-8",
+      "Cache-Control": "no-store, no-transform",
+      "X-Accel-Buffering": "no",
+    },
+  });
 }
