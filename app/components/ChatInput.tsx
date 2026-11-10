@@ -1,11 +1,23 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { useAIStore } from '@/stores/chatStore'
 
 export const ChatInput = () => {
   const prompt = useAIStore((store) => store.prompt)
   const setPrompt = useAIStore((store) => store.setPrompt)
   const generateResponse = useAIStore((store) => store.generateResponse)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el || !prompt) return
+    if (document.activeElement !== el) {
+      el.focus()
+      const len = el.value.length
+      el.setSelectionRange(len, len)
+    }
+  }, [prompt])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.currentTarget
@@ -42,6 +54,7 @@ export const ChatInput = () => {
         className="mx-auto flex max-w-2xl items-end gap-2.5 rounded-card border border-line bg-surface px-4 py-2.5 shadow-elevated transition-colors duration-200 focus-within:border-accent-deep/50"
       >
         <textarea
+          ref={textareaRef}
           value={prompt}
           onChange={handleChange}
           onKeyDown={(e) => {

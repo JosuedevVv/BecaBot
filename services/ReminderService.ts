@@ -89,9 +89,9 @@ export const reminderService = {
         },
         mensaje:
           `✅ **¡Recordatorio agendado exitosamente en tu Perfil Premium!**\n\n` +
-          `📌 **Beca:** ${json.nombreBeca}\n` +
-          `📅 **Fecha de cierre prevista:** ${fechaExp}\n` +
-          `🔔 **Alertas programadas a tu correo:** 30 días, 7 días y 24 horas antes del vencimiento.\n\n` +
+          `• **Beca:** ${json.nombreBeca}\n` +
+          `• **Fecha de cierre prevista:** ${fechaExp}\n` +
+          `• **Alertas programadas a tu correo:** 30 días, 7 días y 24 horas antes del vencimiento.\n\n` +
           `Puedes consultar y gestionar tus alertas activas en cualquier momento desde tu [Expediente en Mi Perfil](/profile).`,
       }
     } catch (e: any) {

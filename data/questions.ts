@@ -10,7 +10,7 @@ export const questions: QuestionType[] = [
   },
   {
     "id": 2,
-    "text": "¿Cuáles son los requisitos?"
+    "text": "¿Cuáles son los requisitos de "
   },
   {
     "id": 3,
@@ -18,6 +18,6 @@ export const questions: QuestionType[] = [
   },
   {
     "id": 4,
-    "text": "¿Cuándo es la fecha límite?"
+    "text": "¿Cuándo es la fecha límite de "
   }
 ]

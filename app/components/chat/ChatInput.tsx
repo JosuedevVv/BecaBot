@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { useAIStore } from '@/stores/chatStore'
 
 export const ChatInput = () => {
@@ -7,6 +8,17 @@ export const ChatInput = () => {
   const setPrompt = useAIStore((store) => store.setPrompt)
   const generateResponse = useAIStore((store) => store.generateResponse)
   const isGenerating = useAIStore((store) => store.isGenerating)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el || !prompt) return
+    if (document.activeElement !== el) {
+      el.focus()
+      const len = el.value.length
+      el.setSelectionRange(len, len)
+    }
+  }, [prompt])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.currentTarget
@@ -34,6 +46,7 @@ export const ChatInput = () => {
         className="mx-auto flex max-w-2xl items-end gap-3 rounded-2xl border-2 border-black bg-white px-4 py-3 shadow-[4px_4px_0px_#000000] transition-all focus-within:shadow-[6px_6px_0px_#000000]"
       >
         <textarea
+          ref={textareaRef}
           value={prompt}
           onChange={handleChange}
           disabled={isGenerating}

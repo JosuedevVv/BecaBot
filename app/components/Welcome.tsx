@@ -10,9 +10,9 @@ import { questions } from "@/data/questions"
 
 const suggestions = [
   "¿Qué becas hay disponibles?",
-  "¿Qué requisitos se piden?",
+  "¿Cuáles son los requisitos de ",
   "¿Cómo es el proceso de aplicar?",
-  "¿Cuáles son las fechas límite?",
+  "¿Cuándo es la fecha límite de ",
 ]
 
 const promptIcons: Record<number, IconName> = {

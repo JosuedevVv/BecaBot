@@ -1,7 +1,6 @@
 import AIResponse from "../AIResponse"
 import { SourceBadge } from "../SourceBadge"
 import type { Message } from "@/stores/chatStore"
-import { useAIStore } from "@/stores/chatStore"
 
 export const ChatMessageItem = ({
   message,
@@ -10,7 +9,6 @@ export const ChatMessageItem = ({
   message: Message
   isStreaming?: boolean
 }) => {
-  const generateResponse = useAIStore((s) => s.generateResponse)
 
   if (message.role === "user") {
     return (
@@ -61,14 +59,11 @@ export const ChatMessageItem = ({
               <span className="text-[10.5px] font-black uppercase tracking-wider text-black">
                 Fuentes oficiales consultadas:
               </span>
-              <span className="text-[9.5px] font-bold text-neutral-500">
-                Plan Premium: Alertas por correo
-              </span>
             </div>
 
             <div className="flex flex-wrap gap-2">
               {message.citations.map((fuente) => (
-                <div key={fuente.title} className="flex items-center gap-1">
+                <div key={fuente.title} className="flex items-center">
                   {fuente.url ? (
                     <a
                       href={fuente.url}
@@ -84,17 +79,6 @@ export const ChatMessageItem = ({
                       {fuente.title}
                     </span>
                   )}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      generateResponse(`Hazme un recordatorio para la beca ${fuente.title}`)
-                    }
-                    title="Agendar recordatorio automático a tu correo (Exclusivo Premium)"
-                    className="inline-flex items-center gap-1 rounded-lg border-2 border-black bg-neutral-100 px-2 py-1 text-[11px] font-black text-black hover:bg-black hover:text-white"
-                  >
-                    <span>🔔 Recordatorio</span>
-                  </button>
                 </div>
               ))}
             </div>

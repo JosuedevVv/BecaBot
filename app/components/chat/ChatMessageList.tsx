@@ -3,24 +3,36 @@
 import { useEffect, useRef } from "react"
 import { useAIStore } from "@/stores/chatStore"
 import { useChatHistoryStore } from "@/stores/chatHistoryStore"
+import { subscriptionService } from "@/services/SubscriptionService"
 import { ChatMessageItem } from "./ChatMessageItem"
+import { Icon } from "../Icon"
 import { SearchingStatus } from "../SourceBadge"
 import Link from "next/link"
 
 const SUGERENCIAS = [
   "¿Qué becas hay disponibles?",
-  "¿Cuáles son los requisitos?",
+  "¿Cuáles son los requisitos de ",
   "Compara dos becas de licenciatura",
-  "¿Cuáles son las fechas límite?",
+  "¿Cuándo es la fecha límite de ",
 ]
 
 export const ChatMessageList = () => {
   const messages = useAIStore((s) => s.messages)
   const isGenerating = useAIStore((s) => s.isGenerating)
   const setPrompt = useAIStore((s) => s.setPrompt)
+  const generateResponse = useAIStore((s) => s.generateResponse)
   const isAuthenticated = useChatHistoryStore((s) => s.isAuthenticated)
   const startNewConversation = useChatHistoryStore((s) => s.startNewConversation)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  const handleReminderClick = async () => {
+    const { esPremium } = await subscriptionService.obtenerEstadoSuscripcion()
+    if (esPremium) {
+      setPrompt("hazme un recordatorio de: ")
+    } else {
+      generateResponse("hazme un recordatorio")
+    }
+  }
 
   const lastMessage = messages[messages.length - 1]
   const showTyping =
@@ -125,9 +137,19 @@ export const ChatMessageList = () => {
 
         {!isGenerating && (
           <div className="rounded-2xl border-2 border-black bg-neutral-50 p-4 shadow-[3px_3px_0px_#000000]">
-            <span className="text-[11px] font-black uppercase tracking-wider text-black">
-              ¿Qué más quieres consultar?
-            </span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-[11px] font-black uppercase tracking-wider text-black">
+                ¿Qué más quieres consultar?
+              </span>
+              <button
+                type="button"
+                onClick={handleReminderClick}
+                className="inline-flex items-center gap-1.5 rounded-xl border-2 border-black bg-black px-3 py-1.5 text-[12px] font-black text-white shadow-[2px_2px_0px_#000000] transition-all hover:bg-neutral-800 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+              >
+                <Icon name="bell" className="size-3.5" />
+                <span>Hacer recordatorio</span>
+              </button>
+            </div>
             <div className="mt-2.5 flex flex-wrap gap-2">
               {SUGERENCIAS.map((sug) => (
                 <button

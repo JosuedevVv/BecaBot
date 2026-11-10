@@ -49,10 +49,10 @@ export function detectarIntencionRecordatorio(
   let becaExtraida = ''
 
   const prefijos = [
-    /recordatorio\s+(?:de\s+la|para\s+la|de|para|sobre)\s+(?:beca\s+)?(.+)/i,
-    /recuerdame\s+(?:la\s+convocatoria\s+de|la\s+beca|de\s+la|sobre\s+la|sobre|la)\s+(.+)/i,
-    /alerta\s+(?:de\s+la|para\s+la|de|para|sobre)\s+(?:beca\s+)?(.+)/i,
-    /avisame\s+(?:de\s+la|sobre\s+la|cuando\s+cierre\s+la)\s+(?:beca\s+)?(.+)/i,
+    /recordatorio\s+(?:de\s+la|para\s+la|de|para|sobre)\s*:?\s*(?:beca\s+)?(.+)/i,
+    /recuerdame\s+(?:la\s+convocatoria\s+de|la\s+beca|de\s+la|sobre\s+la|sobre|la)\s*:?\s*(.+)/i,
+    /alerta\s+(?:de\s+la|para\s+la|de|para|sobre)\s*:?\s*(?:beca\s+)?(.+)/i,
+    /avisame\s+(?:de\s+la|sobre\s+la|cuando\s+cierre\s+la)\s*:?\s*(?:beca\s+)?(.+)/i,
   ]
 
   for (const regex of prefijos) {
